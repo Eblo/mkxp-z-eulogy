@@ -48,7 +48,8 @@ if host_system == 'windows'
 endif
 if build_static == true
     if host_system == 'windows'
-        global_link_args += ['-Wl,-Bstatic', '-lgcc', '-lstdc++', '-lpthread', '-Wl,-Bdynamic']
+        # '-static-libgcc', '-static-libstdc++' are here to avoid needing to ship a separate libgcc_s_seh-1.dll on Windows; it still works without those flags if you have the dll.
+        global_link_args += ['-static-libgcc', '-static-libstdc++', '-Wl,-Bstatic', '-lgcc', '-lstdc++', '-lpthread', '-Wl,-Bdynamic']
     else
         global_link_args += ['-static-libgcc', '-static-libstdc++']
     endif
