@@ -363,7 +363,7 @@ struct CacheEnumData {
 
 #ifdef __APPLE__
   iconv_t nfd2nfc;
-  char buf[512];
+  char buf[1024];
 #endif
 
   CacheEnumData(FileSystemPrivate *p) : p(p) {
@@ -405,7 +405,7 @@ static PHYSFS_EnumerateCallbackResult cacheEnumCB(void *d, const char *origdir,
   if (fname[0] == '.') return PHYSFS_ENUM_OK;
 
   CacheEnumData &data = *static_cast<CacheEnumData *>(d);
-  char fullPath[512];
+  char fullPath[1024];
 
   if (!*origdir)
     snprintf(fullPath, sizeof(fullPath), "%s", fname);
@@ -561,7 +561,7 @@ struct OpenReadEnumData {
 static PHYSFS_EnumerateCallbackResult
 openReadEnumCB(void *d, const char *dirpath, const char *filename) {
   OpenReadEnumData &data = *static_cast<OpenReadEnumData *>(d);
-  char buffer[512];
+  char buffer[1024];
   const char *fullPath;
 
   if (data.stopSearching)
