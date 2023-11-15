@@ -114,7 +114,7 @@ void ALStream::stop()
 	state = Stopped;
 }
 
-void ALStream::play(float offset)
+void ALStream::play(double offset)
 {
 	if (!source)
 		return;
@@ -175,13 +175,14 @@ ALStream::State ALStream::queryState()
 	return state;
 }
 
-float ALStream::queryOffset()
+double ALStream::queryOffset()
 {
 	if (state == Closed || !source)
 		return 0;
 
-	float procOffset = static_cast<float>(procFrames) / source->sampleRate();
+	double procOffset = static_cast<double>(procFrames) / source->sampleRate();
 
+	// TODO: getSecOffset returns a float, we should improve precision to double.
 	return procOffset + AL::Source::getSecOffset(alSrc);
 }
 
@@ -291,7 +292,7 @@ void ALStream::stopStream()
 	procFrames = 0;
 }
 
-void ALStream::startStream(float offset)
+void ALStream::startStream(double offset)
 {
 	AL::Source::clearQueue(alSrc);
 

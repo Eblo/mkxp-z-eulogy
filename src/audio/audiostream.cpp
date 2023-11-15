@@ -77,7 +77,7 @@ AudioStream::~AudioStream()
 void AudioStream::play(const std::string &filename,
                        int volume,
                        int pitch,
-                       float offset,
+                       double offset,
 					   bool doFadein)
 {
 	finiFadeOutInt();
@@ -219,7 +219,7 @@ void AudioStream::fadeOut(int duration)
 	unlockStream();
 }
 
-void AudioStream::seek(float offset)
+void AudioStream::seek(double offset)
 {
 	lockStream();
 	stream.play(offset);
@@ -250,7 +250,7 @@ float AudioStream::getVolume(VolumeType type)
 	return volumes[type];
 }
 
-float AudioStream::playingOffset()
+double AudioStream::playingOffset()
 {
 	return stream.queryOffset();
 }

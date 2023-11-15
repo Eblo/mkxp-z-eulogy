@@ -144,12 +144,19 @@ struct SDLSoundSource : ALDataSource
 		return sample->actual.rate;
 	}
 
-	void seekToOffset(float seconds)
+	void seekToOffset(double seconds)
 	{
 		if (seconds <= 0)
+		{
 			Sound_Rewind(sample);
+		}
 		else
+		{
+			// Unfortunately there is no easy API in SDL_sound for seeking with better precision than 1ms.
+			// TODO: Work around this by manually consuming the remaining samples.
+			// TODO: Also we're flooring here when we probably should be rounding.
 			Sound_Seek(sample, static_cast<uint32_t>(seconds * 1000));
+		}
 	}
 
 	uint32_t loopStartFrames()

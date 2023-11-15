@@ -41,7 +41,7 @@ public:
 	void bgmPlay(const char *filename,
 	             int volume = 100,
 	             int pitch = 100,
-	             float pos = 0,
+	             double pos = 0,
 				 bool fadein = true,
                  int track = -127);
 	void bgmStop(int track = -127);
@@ -55,7 +55,7 @@ public:
 	void bgsPlay(const char *filename,
 	             int volume = 100,
 	             int pitch = 100,
-	             float pos = 0);
+	             double pos = 0);
 	void bgsStop();
 	void bgsFade(int time);
 
@@ -71,8 +71,8 @@ public:
 	void seStop();
 
 	void setupMidi();
-	float bgmPos(int track = 0);
-	float bgsPos();
+	double bgmPos(int track = 0);
+	double bgsPos();
 
 	void reset();
 

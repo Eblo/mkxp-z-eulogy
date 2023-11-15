@@ -891,7 +891,7 @@ struct MidiSource : ALDataSource, MidiReadHandler
 	}
 
 	/* Midi sources cannot seek, and so always reset to beginning */
-	void seekToOffset(float)
+	void seekToOffset(double)
 	{
 		/* Reset synth */
 		fluid.synth_system_reset(synth);

@@ -157,7 +157,7 @@ struct VorbisSource : ALDataSource
 		return info.rate;
 	}
 
-	void seekToOffset(float seconds)
+	void seekToOffset(double seconds)
 	{
 		if (seconds <= 0)
 		{
@@ -165,6 +165,7 @@ struct VorbisSource : ALDataSource
 			currentFrame = 0;
 		}
 
+		// TODO: We're flooring here when we probably should be rounding.
 		currentFrame = seconds * info.rate;
 
 		if (loop.valid && currentFrame > loop.end)

@@ -292,7 +292,7 @@ Audio::Audio(RGSSThreadData &rtData)
 void Audio::bgmPlay(const char *filename,
                     int volume,
                     int pitch,
-                    float pos,
+                    double pos,
                     bool fadein,
                     int track)
 {
@@ -380,7 +380,7 @@ void Audio::bgmSetLoopPoints(int newLoopStart, int newLoopLength, int track)
 void Audio::bgsPlay(const char *filename,
                     int volume,
                     int pitch,
-                    float pos)
+                    double pos)
 {
 	p->bgs.play(filename, volume, pitch, pos);
 }
@@ -431,12 +431,12 @@ void Audio::setupMidi()
 	shState->midiState().initIfNeeded(shState->config());
 }
 
-float Audio::bgmPos(int track)
+double Audio::bgmPos(int track)
 {
 	return p->getTrackByIndex(track)->playingOffset();
 }
 
-float Audio::bgsPos()
+double Audio::bgsPos()
 {
 	return p->bgs.playingOffset();
 }
