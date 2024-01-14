@@ -289,6 +289,9 @@ struct Movie
 
             // Periodically check the buffers until one is available
             while(true) {
+                // Quit if audio thread terminate request has been made
+                if (audioThreadTermReq) return;
+
                 alGetSourcei(audioSource, AL_BUFFERS_PROCESSED, &procBufs);
                 if(procBufs > 0) break;
                 SDL_Delay(AUDIO_SLEEP);
