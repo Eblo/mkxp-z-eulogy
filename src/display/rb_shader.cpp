@@ -60,6 +60,17 @@ std::string getShaderLog(GLuint shader)
     return log;
 }
 
+std::string getProgramLog(GLuint shader)
+{
+    GLint logLength;
+    gl.GetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+
+    std::string log(logLength, '\0');
+    gl.GetProgramInfoLog(shader, log.size(), 0, &log[0]);
+
+    return log;
+}
+
 void CompiledShader::setupShaderSource(const char *contents, GLuint shader, bool vert)
 {
     static const char glesDefine[] = "#define GLSLES\n";
@@ -119,7 +130,7 @@ void CompiledShader::compileShader(const char *contents, GLuint shader, GLuint p
 
         if (!success)
         {
-            rb_raise(rb_eRuntimeError, "Shader linking failed with: \n%s", getShaderLog(program).c_str());
+            rb_raise(rb_eRuntimeError, "Shader linking failed with: \n%s", getProgramLog(program).c_str());
             return;
         }
     }
