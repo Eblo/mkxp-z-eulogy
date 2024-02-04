@@ -71,7 +71,11 @@ struct Vec2
 	{
 		if (len != 16) throw Exception(Exception::ArgumentError, "Vec2: Serialized data invalid");
 
-		return new Vec2(readDouble(&data), readDouble(&data));
+		Vec2* vec2 = new Vec2();
+		vec2->x = readDouble(&data);
+		vec2->y = readDouble(&data);
+
+		return vec2;
 	}
 };
 
@@ -131,7 +135,13 @@ struct Vec4
 	{
 		if (len != 32) throw Exception(Exception::ArgumentError, "Vec4: Serialized data invalid");
 
-		return new Vec4(readDouble(&data), readDouble(&data), readDouble(&data), readDouble(&data));
+		Vec4* vec4 = new Vec4();
+		vec4->x = readDouble(&data);
+		vec4->y = readDouble(&data);
+		vec4->z = readDouble(&data);
+		vec4->w = readDouble(&data);
+
+		return vec4;
 	}
 };
 
