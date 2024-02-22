@@ -203,8 +203,6 @@ struct SpritePrivate
 		shader->setVec4("tone", tone->norm);
         shader->setInteger("bubbleElement", bubbleElement);
         shader->setInteger("mirror", mirrorShader ? 1 : 0);
-        shader->incrementPhase();
-        shader->setTime();
 
         compiled->setTexSize(Vec2i(width, height));
         return compiled;

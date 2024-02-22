@@ -164,8 +164,6 @@ struct PlanePrivate
         shader->setFloat("opacity", opacity.norm);
 		shader->setVec4("color", color->norm);
 		shader->setVec4("tone", tone->norm);
-        shader->incrementPhase();
-        shader->setTime();
 
         compiled->setTexSize(Vec2i(width, height));
         return compiled;

@@ -214,29 +214,6 @@ void CustomShader::setInteger(const char *name, const int value)
         gl.Uniform1i(u_name, value);
 }
 
-/*
-    Ideally, I would like these shaders to be based on time, but with so
-    much of RM assuming 60 FPS, this will do for now.
-*/
-void CustomShader::incrementPhase()
-{
-    GLint u_phase = getUniform("phase");
-    if(u_phase != -1)
-	    gl.Uniform1i(u_phase, phase++);
-}
-
-/*
-    Assuming a target frame rate of 60, we multiply the time by a constant to convert the current time in seconds
-    to the number of frames that should have passed. This lets this time variable work in lieu of the phase variable
-    above.
-*/
-void CustomShader::setTime()
-{
-    GLint u_time = getUniform("timeStep");
-    if(u_time != -1)
-	    gl.Uniform1i(u_time, shState->runTime() * 60);
-}
-
 #define IS_A(klass) if ( \
     rb_obj_is_kind_of(   \
         value,           \
@@ -258,7 +235,15 @@ void CustomShader::applyArgs()
 
         IS_A("Float")
         {
-            gl.Uniform1f(it->second, NUM2DBL(value));
+            double floatUniform;
+            if (it->first[0] == '_') {
+                // Assume this is the _time uniform. The value in the hash actually represents the max value before
+                // looping, while the value passed in is calculated based on runtime, 60FPS, and that value.
+                floatUniform = fmod((shState->runTime() * 60.0), NUM2DBL(value));
+            } else {
+                floatUniform = NUM2DBL(value);
+            }
+            gl.Uniform1f(it->second, floatUniform);
         }
         else IS_A("Integer")
         {
