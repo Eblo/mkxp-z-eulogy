@@ -89,6 +89,7 @@ EventThread::MouseState EventThread::mouseState;
 EventThread::TouchState EventThread::touchState;
 SDL_atomic_t EventThread::verticalScrollDistance;
 uint8_t EventThread::lastInputDevice;
+SourceDesc lastInputDesc;
 
 /* User event codes */
 enum
@@ -396,6 +397,8 @@ void EventThread::process(RGSSThreadData &rtData)
                 
                 keyStates[event.key.keysym.scancode] = true;                
                 lastInputDevice = LAST_INPUT_DEVICE_KBM;
+                lastInputDesc.type = Key;
+                lastInputDesc.d.scan = event.key.keysym.scancode;
                 break;
                 
             case SDL_KEYUP :
@@ -415,6 +418,8 @@ void EventThread::process(RGSSThreadData &rtData)
             case SDL_CONTROLLERBUTTONDOWN:
                 controllerState.buttons[event.cbutton.button] = true;
                 lastInputDevice = LAST_INPUT_DEVICE_GAMEPAD;
+                lastInputDesc.type = CButton;
+                lastInputDesc.d.cb = (SDL_GameControllerButton) event.cbutton.button;
                 break;
                 
             case SDL_CONTROLLERBUTTONUP:
@@ -424,6 +429,9 @@ void EventThread::process(RGSSThreadData &rtData)
             case SDL_CONTROLLERAXISMOTION:
                 controllerState.axes[event.caxis.axis] = event.caxis.value;
                 lastInputDevice = LAST_INPUT_DEVICE_GAMEPAD;
+                lastInputDesc.type = CAxis;
+                lastInputDesc.d.ca.axis = (SDL_GameControllerAxis) event.caxis.axis;
+                lastInputDesc.d.ca.dir = event.caxis.value < 0 ? Negative : Positive;
                 break;
                 
             case SDL_CONTROLLERDEVICEADDED:
@@ -862,6 +870,16 @@ const std::string EventThread::getLastInputDevice()
             return "KBM";
     }
     return "unknown";
+}
+
+const SourceDesc EventThread::getLastInput()
+{
+    return lastInputDesc;
+}
+
+void EventThread::clearLastInput()
+{
+    lastInputDesc.type = Invalid;
 }
 
 void SyncPoint::haltThreads()
