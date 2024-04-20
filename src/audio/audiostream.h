@@ -142,6 +142,9 @@ struct AudioStream
 	float getVolume(VolumeType type);
 
 	float playingOffset();
+	int getNumberOfComments();
+	char** getComments();
+	void setLoopPoints(int newLoopStart, int newLoopLength);
 
 private:
 	float volumes[VolumeTypeCount];

@@ -370,3 +370,20 @@ void AudioStream::fadeInThread()
 		SDL_Delay(AUDIO_SLEEP);
 	}
 }
+
+int AudioStream::getNumberOfComments()
+{
+	return stream.getNumberOfComments();
+}
+
+char** AudioStream::getComments()
+{
+	return stream.getComments();
+}
+
+void AudioStream::setLoopPoints(int newLoopStart, int newLoopLength)
+{
+	lockStream();
+	stream.setLoopPoints(newLoopStart, newLoopLength);
+	unlockStream();
+}

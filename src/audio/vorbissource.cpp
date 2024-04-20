@@ -116,6 +116,8 @@ struct VorbisSource : ALDataSource
 		if (!loop.requested)
 			return;
 
+		int newLoopStart = 0;
+		int newLoopLength = 0;
 		/* Try to extract loop info */
 		for (int i = 0; i < vf.vc->comments; ++i)
 		{
@@ -133,16 +135,15 @@ struct VorbisSource : ALDataSource
 			*sep = '\0';
 
 			if (!strcmp(comment, "LOOPSTART"))
-				loop.start = strtol(sep+1, 0, 10);
+				newLoopStart = strtol(sep+1, 0, 10);
 
 			if (!strcmp(comment, "LOOPLENGTH"))
-				loop.length = strtol(sep+1, 0, 10);
+				newLoopLength = strtol(sep+1, 0, 10);
 
 			*sep = '=';
 		}
 
-		loop.end = loop.start + loop.length;
-		loop.valid = (loop.start && loop.length);
+		setLoopPoints(newLoopStart, newLoopLength);
 	}
 
 	~VorbisSource()
@@ -172,6 +173,24 @@ struct VorbisSource : ALDataSource
 		/* If seeking fails, just seek back to start */
 		if (ov_pcm_seek(&vf, currentFrame) != 0)
 			ov_raw_seek(&vf, 0);
+	}
+
+	char** getComments()
+	{
+		return vf.vc->user_comments;
+	}
+
+	int getNumberOfComments()
+	{
+		return vf.vc->comments;
+	}
+
+	void setLoopPoints(int newLoopStart, int newLoopLength)
+	{
+		loop.start = newLoopStart;
+		loop.length = newLoopLength;
+		loop.end = loop.start + loop.length;
+		loop.valid = (loop.start && loop.length);
 	}
 
 	Status fillBuffer(AL::Buffer::ID alBuffer)

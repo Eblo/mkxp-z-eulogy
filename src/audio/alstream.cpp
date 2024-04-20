@@ -475,3 +475,17 @@ void ALStream::streamData()
 		SDL_Delay(AUDIO_SLEEP);
 	}
 }
+
+int ALStream::getNumberOfComments()
+{
+	return source->getNumberOfComments();
+}
+
+char** ALStream::getComments() {
+	return source->getComments();
+}
+
+void ALStream::setLoopPoints(int newLoopStart, int newLoopLength)
+{
+	source->setLoopPoints(newLoopStart, newLoopLength);
+}

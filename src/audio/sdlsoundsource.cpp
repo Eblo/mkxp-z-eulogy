@@ -119,6 +119,10 @@ struct SDLSoundSource : ALDataSource
 	{
 		return false;
 	}
+
+	int getNumberOfComments() { return 0; }
+	char** getComments() { return 0; }
+	void setLoopPoints(int newLoopStart, int newLoopLength) { }
 };
 
 ALDataSource *createSDLSource(SDL_RWops &ops,

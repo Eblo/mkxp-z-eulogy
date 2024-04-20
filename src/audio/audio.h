@@ -47,6 +47,9 @@ public:
 	void bgmFade(int time, int track = -127);
     int bgmGetVolume(int track = -127);
     void bgmSetVolume(int volume = 100, int track = -127);
+    int bgmGetNumberOfComments(int track = -127);
+    char** bgmGetComments(int track = -127);
+    void bgmSetLoopPoints(int newLoopStart, int newLoopLength, int track = -127);
 
 	void bgsPlay(const char *filename,
 	             int volume = 100,

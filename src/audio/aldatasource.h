@@ -51,6 +51,11 @@ struct ALDataSource
 
 	/* Returns false if not supported */
 	virtual bool setPitch(float value) = 0;
+
+	/* For tracks with more than one pair of loop points */
+	virtual int getNumberOfComments() = 0;
+	virtual char** getComments() = 0;
+	virtual void setLoopPoints(int newLoopStart, int newLoopLength) = 0;
 };
 
 ALDataSource *createSDLSource(SDL_RWops &ops,

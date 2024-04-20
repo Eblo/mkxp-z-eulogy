@@ -914,6 +914,10 @@ struct MidiSource : ALDataSource, MidiReadHandler
 
 		return true;
 	}
+
+	int getNumberOfComments() { return 0; }
+	char** getComments() { return 0; }
+	void setLoopPoints(int newLoopStart, int newLoopLength) { }
 };
 
 ALDataSource *createMidiSource(SDL_RWops &ops,

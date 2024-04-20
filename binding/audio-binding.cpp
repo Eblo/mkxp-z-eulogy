@@ -137,6 +137,34 @@ RB_METHOD(audio_bgmSetVolume)
     return Qnil;
 }
 
+RB_METHOD(audio_bgmSetLoopPoints)
+{
+    RB_UNUSED_PARAM;
+    int newLoopStart, newLoopLength;
+    VALUE track = Qnil;
+    rb_get_args(argc, argv, "ii|o", &newLoopStart, &newLoopLength, &track RB_ARG_END);
+    GUARD_EXC(shState->audio().bgmSetLoopPoints(newLoopStart, newLoopLength, MAYBE_NIL_TRACK(track)); )
+    return Qnil;
+}
+
+RB_METHOD(audio_bgmGetComments)
+{
+    RB_UNUSED_PARAM;
+    VALUE track = Qnil;
+    rb_get_args(argc, argv, "o", &track RB_ARG_END);
+	int numComments = 0;
+	char** sourceComments;
+    VALUE comments = rb_ary_new();
+    GUARD_EXC(
+		numComments = shState->audio().bgmGetNumberOfComments(MAYBE_NIL_TRACK(track));
+		sourceComments = shState->audio().bgmGetComments(MAYBE_NIL_TRACK(track));
+		for(int i = 0; i < numComments; i++) {
+			rb_ary_push(comments, rb_str_new_cstr(sourceComments[i]));
+		}
+	)
+    return comments;
+}
+
 DEF_PLAY_STOP_POS( bgs )
 
 DEF_PLAY_STOP( me )
@@ -199,6 +227,8 @@ audioBindingInit()
 	BIND_PLAY_STOP_FADE( bgm );
     _rb_define_module_function(module, "bgm_volume", audio_bgmGetVolume);
     _rb_define_module_function(module, "bgm_set_volume", audio_bgmSetVolume);
+    _rb_define_module_function(module, "bgm_set_loop_points", audio_bgmSetLoopPoints);
+    _rb_define_module_function(module, "bgm_comments", audio_bgmGetComments);
 	BIND_PLAY_STOP_FADE( bgs );
 	BIND_PLAY_STOP_FADE( me  );
 

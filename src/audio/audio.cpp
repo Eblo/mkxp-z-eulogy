@@ -352,6 +352,29 @@ void Audio::bgmSetVolume(int volume, int track)
     p->getTrackByIndex(track)->setVolume(AudioStream::Base, vol);
 }
 
+int Audio::bgmGetNumberOfComments(int track)
+{
+    if (track == -127) {
+        track = 0;
+    }
+	return p->getTrackByIndex(track)->getNumberOfComments();
+}
+
+char** Audio::bgmGetComments(int track)
+{
+    if (track == -127) {
+        track = 0;
+    }
+	return p->getTrackByIndex(track)->getComments();
+}
+
+void Audio::bgmSetLoopPoints(int newLoopStart, int newLoopLength, int track)
+{
+    if (track == -127) {
+        track = 0;
+    }
+	p->getTrackByIndex(track)->setLoopPoints(newLoopStart, newLoopLength);
+}
 
 void Audio::bgsPlay(const char *filename,
                     int volume,

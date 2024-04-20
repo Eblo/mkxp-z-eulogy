@@ -103,6 +103,9 @@ struct ALStream
 	State queryState();
 	float queryOffset();
 	bool queryNativePitch();
+	int getNumberOfComments();
+	char** getComments();
+	void setLoopPoints(int newLoopStart, int newLoopLength);
 
 private:
 	void closeSource();
