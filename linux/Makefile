@@ -210,7 +210,7 @@ $(DOWNLOADS)/sdl2/configure: $(DOWNLOADS)/sdl2/autogen.sh
 	cd $(DOWNLOADS)/sdl2; ./autogen.sh
 
 $(DOWNLOADS)/sdl2/autogen.sh:
-	$(CLONE) $(GITHUB)/Eblo/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-angle-linux
+	$(CLONE) $(GITHUB)/Eblo/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-2.28.1
 
 # SDL2 (Image)
 sdl2image: init_dirs sdl2 libpng libjpeg $(LIBDIR)/libSDL2_image.a
