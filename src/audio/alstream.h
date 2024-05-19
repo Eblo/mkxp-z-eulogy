@@ -74,8 +74,6 @@ struct ALStream
 	uint64_t procFrames;
 	AL::Buffer::ID lastBuf;
 
-	SDL_RWops srcOps;
-
 	struct
 	{
 		ALenum format;

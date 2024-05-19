@@ -53,7 +53,7 @@ static ov_callbacks OvCallbacks =
 
 struct VorbisSource : ALDataSource
 {
-	SDL_RWops &src;
+	SDL_RWops src;
 
 	OggVorbis_File vf;
 

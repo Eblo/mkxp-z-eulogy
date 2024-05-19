@@ -27,7 +27,7 @@
 struct SDLSoundSource : ALDataSource
 {
 	Sound_Sample *sample;
-	SDL_RWops &srcOps;
+	SDL_RWops srcOps;
 	uint8_t sampleSize;
 	bool looped;
 

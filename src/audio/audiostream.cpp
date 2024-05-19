@@ -114,31 +114,26 @@ void AudioStream::play(const std::string &filename,
 	/* Requested audio file is different from current one */
 	bool diffFile = (filename != current.filename);
 
-	switch (sState)
+	if (diffFile || sState == ALStream::Closed)
 	{
-	case ALStream::Paused :
-	case ALStream::Playing :
-		stream.stop();
-	case ALStream::Stopped :
-		if (diffFile)
-			stream.close();
-	case ALStream::Closed :
-		if (diffFile)
+		try
 		{
-			try
-			{
-				/* This will throw on errors while
-				 * opening the data source */
-				stream.open(filename);
-			}
-			catch (const Exception &e)
-			{
-				unlockStream();
-				throw e;
-			}
+			/* This will throw on errors while
+			 * opening the data source */
+			stream.open(filename);
 		}
-
-		break;
+		catch (const Exception &e)
+		{
+			unlockStream();
+			throw e;
+		}
+	} else {
+		switch (sState)
+		{
+			case ALStream::Paused :
+			case ALStream::Playing :
+				stream.stop();
+		}
 	}
 
 	setVolume(Base, _volume);
