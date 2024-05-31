@@ -231,7 +231,6 @@ try { exp } catch (...) {}
     SET_STRINGOPT(iconPath, iconPath);
     SET_STRINGOPT(execName, execName);
     SET_OPT(allowSymlinks, boolean);
-    SET_OPT(pathCache, boolean);
     SET_OPT_CUSTOMKEY(jit.enabled, JITEnable, boolean);
     SET_OPT_CUSTOMKEY(jit.verboseLevel, JITVerboseLevel, integer);
     SET_OPT_CUSTOMKEY(jit.maxCache, JITMaxCache, integer);
@@ -255,6 +254,7 @@ try { exp } catch (...) {}
     
     // now RESUME
     
+    SET_OPT(pathCache, boolean);
     SET_OPT(debugMode, boolean);
     SET_OPT(printFPS, boolean);
     SET_OPT(fullscreen, boolean);
