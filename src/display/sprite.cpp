@@ -754,7 +754,10 @@ void Sprite::draw()
             gl.BindFramebuffer(GL_FRAMEBUFFER, originalFbo);
         }
     }
-    
+
+    // Always use bilinear filtering for sprites
+    TEX::setSmooth(true);
+
     if (p->wave.active)
         p->wave.qArray.draw();
     else
