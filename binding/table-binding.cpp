@@ -86,7 +86,7 @@ TABLE_SIZE(x, X)
 TABLE_SIZE(y, Y)
 TABLE_SIZE(z, Z)
 
-RB_METHOD(tableGetAt) {
+RB_METHOD_GUARD(tableGetAt) {
   Table *t = getPrivateData<Table>(self);
 
   int x, y, z;
@@ -99,7 +99,7 @@ RB_METHOD(tableGetAt) {
     z = NUM2INT(argv[2]);
 
   if (argc > 3)
-    rb_raise(rb_eArgError, "wrong number of arguments");
+    throw Exception(Exception::ArgumentError, "wrong number of arguments");
 
   if (x < 0 || x >= t->xSize() || y < 0 || y >= t->ySize() || z < 0 ||
       z >= t->zSize()) {
@@ -110,15 +110,16 @@ RB_METHOD(tableGetAt) {
 
   return INT2FIX(result); /* short always fits in a Fixnum */
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(tableSetAt) {
+RB_METHOD_GUARD(tableSetAt) {
   Table *t = getPrivateData<Table>(self);
 
   int x, y, z, value;
   x = y = z = 0;
 
   if (argc < 2)
-    rb_raise(rb_eArgError, "wrong number of arguments");
+    throw Exception(Exception::ArgumentError, "wrong number of arguments");
 
   switch (argc) {
   default:
@@ -146,6 +147,7 @@ RB_METHOD(tableSetAt) {
 
   return argv[argc - 1];
 }
+RB_METHOD_GUARD_END
 
 MARSH_LOAD_FUN(Table)
 INITCOPY_FUN(Table)

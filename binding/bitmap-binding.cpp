@@ -53,7 +53,7 @@ void bitmapInitProps(Bitmap *b, VALUE self) {
     rb_iv_set(self, "font", fontObj);
 }
 
-RB_METHOD(bitmapInitialize) {
+RB_METHOD_GUARD(bitmapInitialize) {
     Bitmap *b = 0;
     
     if (argc == 1) {
@@ -73,43 +73,47 @@ RB_METHOD(bitmapInitialize) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapWidth) {
+RB_METHOD_GUARD(bitmapWidth) {
     RB_UNUSED_PARAM;
     
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int value = 0;
-    GUARD_EXC(value = b->width(););
+   value = b->width();
     
     return INT2FIX(value);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapHeight) {
+RB_METHOD_GUARD(bitmapHeight) {
     RB_UNUSED_PARAM;
     
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int value = 0;
-    GUARD_EXC(value = b->height(););
+   value = b->height();
     
     return INT2FIX(value);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapRect) {
+RB_METHOD_GUARD(bitmapRect) {
     RB_UNUSED_PARAM;
     
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     IntRect rect;
-    GUARD_EXC(rect = b->rect(););
+   rect = b->rect();
     
     Rect *r = new Rect(rect);
     
     return wrapObject(r, RectType);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapBlt) {
+RB_METHOD_GUARD(bitmapBlt) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int x, y;
@@ -130,8 +134,9 @@ RB_METHOD(bitmapBlt) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapStretchBlt) {
+RB_METHOD_GUARD(bitmapStretchBlt) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     VALUE destRectObj;
@@ -154,8 +159,9 @@ RB_METHOD(bitmapStretchBlt) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapFillRect) {
+RB_METHOD_GUARD(bitmapFillRect) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     VALUE colorObj;
@@ -184,8 +190,9 @@ RB_METHOD(bitmapFillRect) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapClear) {
+RB_METHOD_GUARD(bitmapClear) {
     RB_UNUSED_PARAM;
     
     Bitmap *b = getPrivateData<Bitmap>(self);
@@ -194,8 +201,9 @@ RB_METHOD(bitmapClear) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetPixel) {
+RB_METHOD_GUARD(bitmapGetPixel) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int x, y;
@@ -203,14 +211,18 @@ RB_METHOD(bitmapGetPixel) {
     rb_get_args(argc, argv, "ii", &x, &y RB_ARG_END);
     
     Color value;
-    GUARD_EXC(value = b->getPixel(x, y););
+    if (b->surface() || b->megaSurface())
+        value = b->getPixel(x, y);
+    else
+        GFX_GUARD_EXC(value = b->getPixel(x, y););
     
     Color *color = new Color(value);
     
     return wrapObject(color, ColorType);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapSetPixel) {
+RB_METHOD_GUARD(bitmapSetPixel) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int x, y;
@@ -226,8 +238,9 @@ RB_METHOD(bitmapSetPixel) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapHueChange) {
+RB_METHOD_GUARD(bitmapHueChange) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int hue;
@@ -238,8 +251,9 @@ RB_METHOD(bitmapHueChange) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapDrawText) {
+RB_METHOD_GUARD(bitmapDrawText) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     const char *str;
@@ -280,8 +294,9 @@ RB_METHOD(bitmapDrawText) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapTextSize) {
+RB_METHOD_GUARD(bitmapTextSize) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     const char *str;
@@ -296,16 +311,17 @@ RB_METHOD(bitmapTextSize) {
     }
     
     IntRect value;
-    GUARD_EXC(value = b->textSize(str););
+    value = b->textSize(str);
     
     Rect *rect = new Rect(value);
     
     return wrapObject(rect, RectType);
 }
+RB_METHOD_GUARD_END
 
 DEF_GFX_PROP_OBJ_VAL(Bitmap, Font, Font, "font")
 
-RB_METHOD(bitmapGradientFillRect) {
+RB_METHOD_GUARD(bitmapGradientFillRect) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     VALUE color1Obj, color2Obj;
@@ -340,8 +356,9 @@ RB_METHOD(bitmapGradientFillRect) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapClearRect) {
+RB_METHOD_GUARD(bitmapClearRect) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     if (argc == 1) {
@@ -363,33 +380,32 @@ RB_METHOD(bitmapClearRect) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapBlur) {
+RB_METHOD_GUARD(bitmapBlur) {
     RB_UNUSED_PARAM;
     
     Bitmap *b = getPrivateData<Bitmap>(self);
     
-    GFX_LOCK;
-    b->blur();
-    GFX_UNLOCK;
+    GFX_GUARD_EXC( b->blur(); );
     
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapRadialBlur) {
+RB_METHOD_GUARD(bitmapRadialBlur) {
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     int angle, divisions;
     rb_get_args(argc, argv, "ii", &angle, &divisions RB_ARG_END);
     
-    GFX_LOCK;
-    b->radialBlur(angle, divisions);
-    GFX_UNLOCK;
+    GFX_GUARD_EXC( b->radialBlur(angle, divisions); );
     
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetRawData) {
+RB_METHOD_GUARD(bitmapGetRawData) {
     RB_UNUSED_PARAM;
     
     Bitmap *b = getPrivateData<Bitmap>(self);
@@ -400,8 +416,9 @@ RB_METHOD(bitmapGetRawData) {
     
     return ret;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapSetRawData) {
+RB_METHOD_GUARD(bitmapSetRawData) {
     RB_UNUSED_PARAM;
     
     VALUE str;
@@ -414,8 +431,9 @@ RB_METHOD(bitmapSetRawData) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapSaveToFile) {
+RB_METHOD_GUARD(bitmapSaveToFile) {
     RB_UNUSED_PARAM;
     
     VALUE str;
@@ -428,8 +446,9 @@ RB_METHOD(bitmapSaveToFile) {
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetMega){
+RB_METHOD_GUARD(bitmapGetMega){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -442,8 +461,9 @@ RB_METHOD(bitmapGetMega){
     
     return ret;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetAnimated){
+RB_METHOD_GUARD(bitmapGetAnimated){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -456,8 +476,9 @@ RB_METHOD(bitmapGetAnimated){
     
     return ret;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetPlaying){
+RB_METHOD_GUARD(bitmapGetPlaying){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -466,8 +487,9 @@ RB_METHOD(bitmapGetPlaying){
     
     return rb_bool_new(b->isPlaying());
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapSetPlaying){
+RB_METHOD_GUARD(bitmapSetPlaying){
     RB_UNUSED_PARAM;
     
     bool play;
@@ -480,8 +502,9 @@ RB_METHOD(bitmapSetPlaying){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapPlay){
+RB_METHOD_GUARD(bitmapPlay){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -491,8 +514,9 @@ RB_METHOD(bitmapPlay){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapStop){
+RB_METHOD_GUARD(bitmapStop){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -502,8 +526,9 @@ RB_METHOD(bitmapStop){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGotoStop){
+RB_METHOD_GUARD(bitmapGotoStop){
     RB_UNUSED_PARAM;
     
     int frame;
@@ -516,8 +541,9 @@ RB_METHOD(bitmapGotoStop){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGotoPlay){
+RB_METHOD_GUARD(bitmapGotoPlay){
     RB_UNUSED_PARAM;
     
     int frame;
@@ -530,8 +556,9 @@ RB_METHOD(bitmapGotoPlay){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapFrames){
+RB_METHOD_GUARD(bitmapFrames){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -540,8 +567,9 @@ RB_METHOD(bitmapFrames){
     
     return INT2NUM(b->numFrames());
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapCurrentFrame){
+RB_METHOD_GUARD(bitmapCurrentFrame){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -550,8 +578,9 @@ RB_METHOD(bitmapCurrentFrame){
     
     return INT2NUM(b->currentFrameI());
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapAddFrame){
+RB_METHOD_GUARD(bitmapAddFrame){
     RB_UNUSED_PARAM;
     
     VALUE srcBitmap;
@@ -575,8 +604,9 @@ RB_METHOD(bitmapAddFrame){
     
     return INT2NUM(ret);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapRemoveFrame){
+RB_METHOD_GUARD(bitmapRemoveFrame){
     RB_UNUSED_PARAM;
     
     VALUE position;
@@ -595,8 +625,9 @@ RB_METHOD(bitmapRemoveFrame){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapNextFrame){
+RB_METHOD_GUARD(bitmapNextFrame){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -607,8 +638,9 @@ RB_METHOD(bitmapNextFrame){
     
     return INT2NUM(b->currentFrameI());
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapPreviousFrame){
+RB_METHOD_GUARD(bitmapPreviousFrame){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -619,8 +651,9 @@ RB_METHOD(bitmapPreviousFrame){
     
     return INT2NUM(b->currentFrameI());
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapSetFPS){
+RB_METHOD_GUARD(bitmapSetFPS){
     RB_UNUSED_PARAM;
     
     VALUE fps;
@@ -639,8 +672,9 @@ RB_METHOD(bitmapSetFPS){
     
     return RUBY_Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetFPS){
+RB_METHOD_GUARD(bitmapGetFPS){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -649,12 +683,13 @@ RB_METHOD(bitmapGetFPS){
     
     float ret;
     
-    GUARD_EXC(ret = b->getAnimationFPS(););
+    ret = b->getAnimationFPS();
     
     return rb_float_new(ret);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapSetLooping){
+RB_METHOD_GUARD(bitmapSetLooping){
     RB_UNUSED_PARAM;
     
     bool loop;
@@ -666,8 +701,9 @@ RB_METHOD(bitmapSetLooping){
     
     return rb_bool_new(loop);
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(bitmapGetLooping){
+RB_METHOD_GUARD(bitmapGetLooping){
     RB_UNUSED_PARAM;
     
     rb_check_argc(argc, 0);
@@ -675,12 +711,13 @@ RB_METHOD(bitmapGetLooping){
     Bitmap *b = getPrivateData<Bitmap>(self);
     
     bool ret;
-    GUARD_EXC(ret = b->getLooping(););
+    ret = b->getLooping();
     return rb_bool_new(ret);
 }
+RB_METHOD_GUARD_END
 
 // Captures the Bitmap's current frame data to a new Bitmap
-RB_METHOD(bitmapSnapToBitmap) {
+RB_METHOD_GUARD(bitmapSnapToBitmap) {
     RB_UNUSED_PARAM;
     
     VALUE position;
@@ -700,6 +737,7 @@ RB_METHOD(bitmapSnapToBitmap) {
     
     return ret;
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(bitmapGetMaxSize){
     RB_UNUSED_PARAM;
@@ -709,7 +747,7 @@ RB_METHOD(bitmapGetMaxSize){
     return INT2NUM(Bitmap::maxSize());
 }
 
-RB_METHOD(bitmapInitializeCopy) {
+RB_METHOD_GUARD(bitmapInitializeCopy) {
     rb_check_argc(argc, 1);
     VALUE origObj = argv[0];
     
@@ -727,6 +765,7 @@ RB_METHOD(bitmapInitializeCopy) {
     
     return self;
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(bitmapShade)
 {

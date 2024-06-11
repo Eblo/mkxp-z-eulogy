@@ -73,7 +73,7 @@ RB_METHOD(graphicsFreeze)
     return Qnil;
 }
 
-RB_METHOD(graphicsTransition)
+RB_METHOD_GUARD(graphicsTransition)
 {
     RB_UNUSED_PARAM;
     
@@ -87,6 +87,7 @@ RB_METHOD(graphicsTransition)
     
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(graphicsFrameReset)
 {
@@ -227,7 +228,7 @@ RB_METHOD(graphicsFadein)
 
 void bitmapInitProps(Bitmap *b, VALUE self);
 
-RB_METHOD(graphicsSnapToBitmap)
+RB_METHOD_GUARD(graphicsSnapToBitmap)
 {
     RB_UNUSED_PARAM;
     
@@ -240,6 +241,7 @@ RB_METHOD(graphicsSnapToBitmap)
     
     return obj;
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(graphicsResizeScreen)
 {

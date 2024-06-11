@@ -37,6 +37,8 @@ struct Exception
 		/* Already defined by ruby */
 		TypeError,
 		ArgumentError,
+		SystemExit,
+		RuntimeError,
 
 		/* New types introduced in mkxp */
 		PHYSFSError,
@@ -45,7 +47,7 @@ struct Exception
 	};
 
 	Type type;
-	std::string msg;
+	char msg[512];
 
 	Exception(Type type, const char *format, ...)
 	    : type(type)
@@ -53,8 +55,7 @@ struct Exception
 		va_list ap;
 		va_start(ap, format);
 
-		msg.resize(512);
-		vsnprintf(&msg[0], msg.size(), format, ap);
+		vsnprintf(msg, sizeof(msg), format, ap);
 
 		va_end(ap);
 	}

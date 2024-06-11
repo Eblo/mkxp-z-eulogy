@@ -55,6 +55,8 @@ enum RbException {
     
     TypeError,
     ArgumentError,
+    SystemExit,
+    RuntimeError,
     
     RbExceptionsMax
 };
@@ -73,7 +75,8 @@ RbData *getRbData();
 
 struct Exception;
 
-void raiseRbExc(const Exception &exc);
+VALUE excToRbClass(const Exception &exc);
+void raiseRbExc(Exception exc);
 
 #if RAPI_FULL > 187
 #define DECL_TYPE(Klass) extern rb_data_type_t Klass##Type
@@ -315,16 +318,16 @@ raiseRbExc(exc);                                                         \
 }                                                                          \
 }
 
-#define GFX_GUARD_EXC(exp)                                                         \
-{\
-GFX_LOCK; \
-try {\
+#define GFX_GUARD_EXC(exp)                                               \
+{                                                                        \
+GFX_LOCK;                                                                \
+try {                                                                    \
 exp                                                                      \
-} catch (const Exception &exc) {\
-GFX_UNLOCK; \
-raiseRbExc(exc);                                                         \
-}\
-GFX_UNLOCK;\
+} catch (const Exception &exc) {                                         \
+GFX_UNLOCK;                                                              \
+throw exc;                                                               \
+}                                                                        \
+GFX_UNLOCK;                                                              \
 }
 
 
@@ -338,7 +341,7 @@ static inline VALUE objectLoad(int argc, VALUE *argv, VALUE self) {
     
     C *c = 0;
     
-    GUARD_EXC(c = C::deserialize(data, dataLen););
+    c = C::deserialize(data, dataLen);
     
     setPrivateData(obj, c);
     
@@ -358,7 +361,7 @@ inline void rb_float_arg(VALUE arg, double *out, int argPos = 0) {
             break;
             
         default:
-            rb_raise(rb_eTypeError, "Argument %d: Expected float", argPos);
+            throw Exception(Exception::TypeError, "Argument %d: Expected float", argPos);
     }
 }
 
@@ -374,7 +377,7 @@ inline void rb_int_arg(VALUE arg, int *out, int argPos = 0) {
             break;
             
         default:
-            rb_raise(rb_eTypeError, "Argument %d: Expected fixnum", argPos);
+            throw Exception(Exception::TypeError, "Argument %d: Expected fixnum", argPos);
     }
 }
 
@@ -390,10 +393,13 @@ inline void rb_bool_arg(VALUE arg, bool *out, int argPos = 0) {
             break;
             
         default:
-            rb_raise(rb_eTypeError, "Argument %d: Expected bool", argPos);
+            throw Exception(Exception::TypeError, "Argument %d: Expected bool", argPos);
     }
 }
 
+/* rb_check_argc and rb_error_arity are both
+ * consistently called before any C++ objects are allocated,
+ * so we can just call rb_raise directly in them */
 inline void rb_check_argc(int actual, int expected) {
     if (actual != expected)
         rb_raise(rb_eArgError, "wrong number of arguments (%d for %d)", actual,
@@ -431,21 +437,41 @@ static inline VALUE rb_file_open_str(VALUE filename, const char *mode) {
 (void)self;                                                                \
 }
 
+/* Calling rb_raise inside the catch block
+ * leaks memory even if we catch by value */
+#define RB_METHOD_GUARD(name) RB_METHOD(name)   \
+{                                               \
+    Exception *exc = 0;                         \
+    try{                                        \
+
+#define RB_METHOD_GUARD_END                     \
+    } catch (const Exception &e) {              \
+        exc = new Exception(e);                 \
+    }                                           \
+    if (exc) {                                  \
+        Exception e(*exc);                      \
+        delete exc;                             \
+        rb_raise(excToRbClass(e), "%s", e.msg); \
+    }                                           \
+    return Qnil;                                \
+}
+
 #define MARSH_LOAD_FUN(Typ)                                                    \
-RB_METHOD(Typ##Load) { return objectLoad<Typ>(argc, argv, self); }
+RB_METHOD_GUARD(Typ##Load) { return objectLoad<Typ>(argc, argv, self); } RB_METHOD_GUARD_END
 
 #define INITCOPY_FUN(Klass)                                                    \
-RB_METHOD(Klass##InitializeCopy) {                                           \
+RB_METHOD_GUARD(Klass##InitializeCopy) {                                   \
 VALUE origObj;                                                             \
 rb_get_args(argc, argv, "o", &origObj RB_ARG_END);                         \
 if (!OBJ_INIT_COPY(self, origObj)) /* When would this fail??*/             \
 return self;                                                             \
 Klass *orig = getPrivateData<Klass>(origObj);                              \
 Klass *k = 0;                                                              \
-GUARD_EXC(k = new Klass(*orig);)                                           \
+k = new Klass(*orig);                                                      \
 setPrivateData(self, k);                                                   \
 return self;                                                               \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 
 /* Object property which is copied by reference, with allowed NIL
  * FIXME: Getter assumes prop is disposable,
@@ -461,7 +487,7 @@ RB_METHOD(Klass##Get##PropName) {                                            \
 RB_UNUSED_PARAM;                                                           \
 return rb_iv_get(self, prop_iv);                                           \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 RB_UNUSED_PARAM;                                                           \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
@@ -471,17 +497,18 @@ if (NIL_P(propObj))                                                        \
 prop = 0;                                                                \
 else                                                                       \
 prop = getPrivateDataCheck<PropKlass>(propObj, PropKlass##Type);         \
-GUARD_EXC(k->set##PropName(prop);)                                         \
+k->set##PropName(prop)                                                     \
 rb_iv_set(self, prop_iv, propObj);                                         \
 return propObj;                                                            \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 #else
 #define DEF_PROP_OBJ_REF(Klass, PropKlass, PropName, prop_iv)                  \
 RB_METHOD(Klass##Get##PropName) {                                            \
 RB_UNUSED_PARAM;                                                           \
 return rb_iv_get(self, prop_iv);                                           \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 RB_UNUSED_PARAM;                                                           \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
@@ -491,10 +518,11 @@ if (NIL_P(propObj))                                                        \
 prop = 0;                                                                \
 else                                                                       \
 prop = getPrivateDataCheck<PropKlass>(propObj, #PropKlass);              \
-GUARD_EXC(k->set##PropName(prop);)                                         \
+k->set##PropName(prop)                                                     \
 rb_iv_set(self, prop_iv, propObj);                                         \
 return propObj;                                                            \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 #endif
 
 /* Object property which is copied by value, not reference */
@@ -505,15 +533,16 @@ RB_UNUSED_PARAM;                                                           \
 checkDisposed<Klass>(self);                                                \
 return rb_iv_get(self, prop_iv);                                           \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
 VALUE propObj = *argv;                                                     \
 PropKlass *prop;                                                           \
 prop = getPrivateDataCheck<PropKlass>(propObj, PropKlass##Type);           \
-GUARD_EXC(k->set##PropName(*prop);)                                        \
+k->set##PropName(*prop);                                                   \
 return propObj;                                                            \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 #else
 #define DEF_PROP_OBJ_VAL(Klass, PropKlass, PropName, prop_iv)                  \
 RB_METHOD(Klass##Get##PropName) {                                            \
@@ -521,33 +550,36 @@ RB_UNUSED_PARAM;                                                           \
 checkDisposed<Klass>(self);                                                \
 return rb_iv_get(self, prop_iv);                                           \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
 VALUE propObj = *argv;                                                     \
 PropKlass *prop;                                                           \
 prop = getPrivateDataCheck<PropKlass>(propObj, #PropKlass);                \
-GUARD_EXC(k->set##PropName(*prop);)                                        \
+k->set##PropName(*prop);                                                   \
 return propObj;                                                            \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 #endif
 
-#define DEF_PROP(Klass, type, PropName, arg_fun, value_fun)                    \
-RB_METHOD(Klass##Get##PropName) {                                            \
+#define DEF_PROP(Klass, type, PropName, arg_fun, value_fun)                \
+RB_METHOD_GUARD(Klass##Get##PropName) {                                    \
 RB_UNUSED_PARAM;                                                           \
 Klass *k = getPrivateData<Klass>(self);                                    \
 type value = 0;                                                            \
-GUARD_EXC(value = k->get##PropName();)                                     \
+value = k->get##PropName();                                                \
 return value_fun(value);                                                   \
-}                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+}                                                                          \
+RB_METHOD_GUARD_END                                                        \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
 type value;                                                                \
 rb_##arg_fun##_arg(*argv, &value);                                         \
-GUARD_EXC(k->set##PropName(value);)                                        \
+k->set##PropName(value);                                                   \
 return *argv;                                                              \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 
 #define DEF_PROP_I(Klass, PropName)                                            \
 DEF_PROP(Klass, int, PropName, int, rb_fix_new)
@@ -573,7 +605,7 @@ RB_METHOD(Klass##Get##PropName) {                                            \
 RB_UNUSED_PARAM;                                                           \
 return rb_iv_get(self, prop_iv);                                           \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 RB_UNUSED_PARAM;                                                           \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
@@ -586,7 +618,8 @@ prop = getPrivateDataCheck<PropKlass>(propObj, PropKlass##Type);         \
 GFX_GUARD_EXC(k->set##PropName(prop);)                                         \
 rb_iv_set(self, prop_iv, propObj);                                         \
 return propObj;                                                            \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 #else
 #define DEF_GFX_PROP_OBJ_REF(Klass, PropKlass, PropName, prop_iv)                  \
 DEF_PROP_OBJ_REF(Klass, PropKlass, PropName, prop_iv)
@@ -600,7 +633,7 @@ RB_UNUSED_PARAM;                                                           \
 checkDisposed<Klass>(self);                                                \
 return rb_iv_get(self, prop_iv);                                           \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
 VALUE propObj = *argv;                                                     \
@@ -608,28 +641,31 @@ PropKlass *prop;                                                           \
 prop = getPrivateDataCheck<PropKlass>(propObj, PropKlass##Type);           \
 GFX_GUARD_EXC(k->set##PropName(*prop);)                                        \
 return propObj;                                                            \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 #else
 #define DEF_GFX_PROP_OBJ_VAL(Klass, PropKlass, PropName, prop_iv)                  \
 DEF_PROP_OBJ_VAL(Klass, PropKlass, PropName, prop_iv)
 #endif
 
-#define DEF_GFX_PROP(Klass, type, PropName, arg_fun, value_fun)                    \
-RB_METHOD(Klass##Get##PropName) {                                            \
+#define DEF_GFX_PROP(Klass, type, PropName, arg_fun, value_fun)            \
+RB_METHOD_GUARD(Klass##Get##PropName) {                                    \
 RB_UNUSED_PARAM;                                                           \
 Klass *k = getPrivateData<Klass>(self);                                    \
 type value = 0;                                                            \
-GUARD_EXC(value = k->get##PropName();)                                     \
+value = k->get##PropName();                                                \
 return value_fun(value);                                                   \
 }                                                                            \
-RB_METHOD(Klass##Set##PropName) {                                            \
+RB_METHOD_GUARD_END                                                        \
+RB_METHOD_GUARD(Klass##Set##PropName) {                                    \
 rb_check_argc(argc, 1);                                                    \
 Klass *k = getPrivateData<Klass>(self);                                    \
 type value;                                                                \
 rb_##arg_fun##_arg(*argv, &value);                                         \
 GFX_GUARD_EXC(k->set##PropName(value);)                                        \
 return *argv;                                                              \
-}
+}                                                                          \
+RB_METHOD_GUARD_END
 
 #define DEF_GFX_PROP_I(Klass, PropName)                                            \
 DEF_GFX_PROP(Klass, int, PropName, int, rb_fix_new)

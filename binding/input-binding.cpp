@@ -76,7 +76,7 @@ static int getScancodeArg(VALUE *argv) {
     try {
         code = strToScancode[scancode];
     } catch (...) {
-        rb_raise(rb_eRuntimeError, "%s is not a valid name of an SDL scancode.", scancode);
+        throw Exception(Exception::RuntimeError, "%s is not a valid name of an SDL scancode.", scancode);
     }
     
     return code;
@@ -88,7 +88,7 @@ static int getControllerButtonArg(VALUE *argv) {
     try {
         btn = strToGCButton[button];
     } catch (...) {
-        rb_raise(rb_eRuntimeError, "%s is not a valid name of an SDL Controller button.", button);
+        throw Exception(Exception::RuntimeError, "%s is not a valid name of an SDL Controller button.", button);
     }
     
     return btn;
@@ -198,7 +198,7 @@ RB_METHOD(inputRepeatTime) {
     return rb_float_new(shState->input().repeatTime(num));
 }
 
-RB_METHOD(inputPressEx) {
+RB_METHOD_GUARD(inputPressEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -211,8 +211,9 @@ RB_METHOD(inputPressEx) {
     
     return rb_bool_new(shState->input().isPressedEx(NUM2INT(button), 1));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputTriggerEx) {
+RB_METHOD_GUARD(inputTriggerEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -225,8 +226,9 @@ RB_METHOD(inputTriggerEx) {
     
     return rb_bool_new(shState->input().isTriggeredEx(NUM2INT(button), 1));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputRepeatEx) {
+RB_METHOD_GUARD(inputRepeatEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -239,8 +241,9 @@ RB_METHOD(inputRepeatEx) {
     
     return rb_bool_new(shState->input().isRepeatedEx(NUM2INT(button), 1));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputReleaseEx) {
+RB_METHOD_GUARD(inputReleaseEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -253,8 +256,9 @@ RB_METHOD(inputReleaseEx) {
     
     return rb_bool_new(shState->input().isReleasedEx(NUM2INT(button), 1));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputCountEx) {
+RB_METHOD_GUARD(inputCountEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -267,8 +271,9 @@ RB_METHOD(inputCountEx) {
     
     return UINT2NUM(shState->input().repeatcount(NUM2INT(button), 1));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputRepeatTimeEx) {
+RB_METHOD_GUARD(inputRepeatTimeEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -281,6 +286,7 @@ RB_METHOD(inputRepeatTimeEx) {
     
     return rb_float_new(shState->input().repeatTimeEx(NUM2INT(button), 1));
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(inputDir4) {
     RB_UNUSED_PARAM;
@@ -550,7 +556,7 @@ AXISFUNC(Trigger, TRIGGERLEFT, TRIGGERRIGHT);
 #undef POWERCASE
 #undef M_SYMBOL
 
-RB_METHOD(inputControllerPressEx) {
+RB_METHOD_GUARD(inputControllerPressEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -563,8 +569,9 @@ RB_METHOD(inputControllerPressEx) {
     
     return rb_bool_new(shState->input().controllerIsPressedEx(NUM2INT(button)));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputControllerTriggerEx) {
+RB_METHOD_GUARD(inputControllerTriggerEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -577,8 +584,9 @@ RB_METHOD(inputControllerTriggerEx) {
     
     return rb_bool_new(shState->input().controllerIsTriggeredEx(NUM2INT(button)));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputControllerRepeatEx) {
+RB_METHOD_GUARD(inputControllerRepeatEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -591,8 +599,9 @@ RB_METHOD(inputControllerRepeatEx) {
     
     return rb_bool_new(shState->input().controllerIsRepeatedEx(NUM2INT(button)));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputControllerReleaseEx) {
+RB_METHOD_GUARD(inputControllerReleaseEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -605,8 +614,9 @@ RB_METHOD(inputControllerReleaseEx) {
     
     return rb_bool_new(shState->input().controllerIsReleasedEx(NUM2INT(button)));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputControllerCountEx) {
+RB_METHOD_GUARD(inputControllerCountEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -619,8 +629,9 @@ RB_METHOD(inputControllerCountEx) {
     
     return rb_bool_new(shState->input().controllerRepeatcount(NUM2INT(button)));
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputControllerRepeatTimeEx) {
+RB_METHOD_GUARD(inputControllerRepeatTimeEx) {
     RB_UNUSED_PARAM;
     
     VALUE button;
@@ -633,6 +644,7 @@ RB_METHOD(inputControllerRepeatTimeEx) {
     
     return rb_float_new(shState->input().controllerRepeatTimeEx(NUM2INT(button)));
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(inputControllerRawButtonStates) {
     RB_UNUSED_PARAM;
@@ -684,18 +696,13 @@ RB_METHOD(inputGets) {
     return ret;
 }
 
-RB_METHOD(inputGetClipboard) {
+RB_METHOD_GUARD(inputGetClipboard) {
     RB_UNUSED_PARAM;
-    VALUE ret;
-    try {
-        ret = rb_utf8_str_new_cstr(shState->input().getClipboardText());
-    } catch (const Exception &e) {
-        raiseRbExc(e);
-    }
-    return ret;
+    return rb_utf8_str_new_cstr(shState->input().getClipboardText());
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(inputSetClipboard) {
+RB_METHOD_GUARD(inputSetClipboard) {
     RB_UNUSED_PARAM;
     
     VALUE str;
@@ -703,13 +710,11 @@ RB_METHOD(inputSetClipboard) {
     
     SafeStringValue(str);
     
-    try {
-        shState->input().setClipboardText(RSTRING_PTR(str));
-    } catch (const Exception &e) {
-        raiseRbExc(e);
-    }
+    shState->input().setClipboardText(RSTRING_PTR(str));
+    
     return str;
 }
+RB_METHOD_GUARD_END
 
 struct {
     const char *str;
