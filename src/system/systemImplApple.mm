@@ -12,13 +12,17 @@
 #import "system.h"
 
 std::string systemImpl::getSystemLanguage() {
-    NSString *languageCode = NSLocale.currentLocale.languageCode;
-    NSString *countryCode = NSLocale.currentLocale.countryCode;
-    return std::string([NSString stringWithFormat:@"%@_%@", languageCode, countryCode].UTF8String);
+    @autoreleasepool {
+        NSString *languageCode = NSLocale.currentLocale.languageCode;
+        NSString *countryCode = NSLocale.currentLocale.countryCode;
+        return std::string([NSString stringWithFormat:@"%@_%@", languageCode, countryCode].UTF8String);
+    }
 }
 
 std::string systemImpl::getUserName() {
-    return std::string(NSUserName().UTF8String);
+    @autoreleasepool {
+        return std::string(NSUserName().UTF8String);
+    }
 }
 
 int systemImpl::getScalingFactor() {
@@ -53,9 +57,11 @@ bool isMetalSupported() {
 }
 
 std::string getPlistValue(const char *key) {
-    NSString *hash = [[NSBundle mainBundle] objectForInfoDictionaryKey:@(key)];
-    if (hash != nil) {
-        return std::string(hash.UTF8String);
+    @autoreleasepool {
+        NSString *hash = [[NSBundle mainBundle] objectForInfoDictionaryKey:@(key)];
+        if (hash != nil) {
+            return std::string(hash.UTF8String);
+        }
+        return "";
     }
-    return "";
 }

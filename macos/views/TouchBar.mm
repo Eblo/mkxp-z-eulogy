@@ -111,7 +111,9 @@ MKXPZTouchBar *_sharedTouchBar;
     if (fpsLabel) {
         int targetFrameRate = shState->graphics().getFrameRate();
         dispatch_async(dispatch_get_main_queue(), ^{
-            self->fpsLabel.stringValue = [NSString stringWithFormat:@"%@\n%i FPS (%i%%)", self.gameTitle, value, (int)((float)value / (float)targetFrameRate * 100)];
+            @autoreleasepool {
+                self->fpsLabel.stringValue = [NSString stringWithFormat:@"%@\n%i FPS (%i%%)", self.gameTitle, value, (int)((float)value / (float)targetFrameRate * 100)];
+            }
         });
     }
 }
