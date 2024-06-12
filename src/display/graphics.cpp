@@ -1582,6 +1582,13 @@ void Graphics::reset() {
     
     setFrameRate(DEF_FRAMERATE);
     setBrightness(255);
+    
+    // Always update at least once to clear the screen
+    if (p->threadData->rqResetFinish)
+        update();
+    else
+        repaintWait(p->threadData->rqResetFinish, false);
+    p->threadData->rqReset.clear();
 }
 
 void Graphics::center() {

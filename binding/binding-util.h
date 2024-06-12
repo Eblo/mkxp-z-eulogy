@@ -78,6 +78,11 @@ struct Exception;
 VALUE excToRbClass(const Exception &exc);
 void raiseRbExc(Exception exc);
 
+#if RAPI_MAJOR >= 2
+void *drop_gvl_guard(void *(*func)(void *), void *args,
+                            rb_unblock_function_t *ubf, void *data2);
+#endif
+
 #if RAPI_FULL > 187
 #define DECL_TYPE(Klass) extern rb_data_type_t Klass##Type
 
@@ -307,15 +312,6 @@ static inline void rb_define_class_method(VALUE klass, const char *name,
 static inline void _rb_define_module_function(VALUE module, const char *name,
                                               RubyMethod func) {
     rb_define_module_function(module, name, RUBY_METHOD_FUNC(func), -1);
-}
-
-#define GUARD_EXC(exp)                                                         \
-{                                                                            \
-try {                                                                      \
-exp                                                                      \
-} catch (const Exception &exc) {                                           \
-raiseRbExc(exc);                                                         \
-}                                                                          \
 }
 
 #define GFX_GUARD_EXC(exp)                                               \

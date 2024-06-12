@@ -58,8 +58,9 @@ RbData::~RbData() {}
 
 /* Indexed with Exception::Type */
 const RbException excToRbExc[] = {
-    RGSS,        /* RGSSError   */
-    ErrnoENOENT, /* NoFileError */
+    RGSS,        /* RGSSError          */
+    Reset,       /* Reset/RGSSReset */
+    ErrnoENOENT, /* NoFileError        */
     IOError,
 
     TypeError,   ArgumentError, SystemExit, RuntimeError,
@@ -317,3 +318,39 @@ int rb_get_args(int argc, VALUE *argv, const char *format, ...) {
 
   return 0;
 }
+
+#if RAPI_MAJOR >= 2
+#include <ruby/thread.h>
+
+typedef struct gvl_guard_args {
+	Exception *exc;
+	void *(*func)(void *);
+	void *args;
+} gvl_guard_args;
+
+static void *gvl_guard(void *args) {
+	gvl_guard_args *gvl_args = (gvl_guard_args*)args;
+	try{
+		return gvl_args->func(gvl_args->args);
+	} catch (const Exception &e) {
+		gvl_args->exc = new Exception(e.type, e.msg);
+	}
+	return 0;
+}
+
+void *drop_gvl_guard(void *(*func)(void *), void *args,
+                            rb_unblock_function_t *ubf, void *data2) {
+	gvl_guard_args gvl_args = {0, func, args};
+	
+	void *ret = rb_thread_call_without_gvl(&gvl_guard, &gvl_args, ubf, data2);
+	
+	Exception *&exc = gvl_args.exc;
+	if (exc){
+		Exception e(exc->type, exc->msg);
+		delete exc;
+		throw e;
+	}
+	return ret;
+}
+
+#endif

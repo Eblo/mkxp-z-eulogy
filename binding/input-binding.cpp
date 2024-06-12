@@ -37,13 +37,14 @@ RB_METHOD(inputDelta) {
     return rb_float_new(shState->input().getDelta());
 }
 
-RB_METHOD(inputUpdate) {
+RB_METHOD_GUARD(inputUpdate) {
     RB_UNUSED_PARAM;
     
     shState->input().update();
     
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
 static int getButtonArg(VALUE *argv) {
     int num;

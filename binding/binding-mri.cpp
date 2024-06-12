@@ -325,21 +325,29 @@ static void printP(int argc, VALUE *argv, const char *convMethod,
 }
 
 
-RB_METHOD(mriPrint) {
+RB_METHOD_GUARD(mriPrint) {
     RB_UNUSED_PARAM;
     
     printP(argc, argv, "to_s", "");
     
+    shState->checkShutdown();
+    shState->checkReset();
+    
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(mriP) {
+RB_METHOD_GUARD(mriP) {
     RB_UNUSED_PARAM;
     
     printP(argc, argv, "inspect", "\n");
     
+    shState->checkShutdown();
+    shState->checkReset();
+    
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(mkxpDelta) {
     RB_UNUSED_PARAM;
@@ -759,15 +767,21 @@ static VALUE rgssMainRescue(VALUE arg, VALUE exc) {
     return Qnil;
 }
 
-static void processReset() {
-    shState->graphics().reset();
-    shState->audio().reset();
-    
-    shState->rtData().rqReset.clear();
-    shState->graphics().repaintWait(shState->rtData().rqResetFinish, false);
+static bool processReset(bool rubyExc) {
+	const char *str = "Audio.__reset__; Graphics.__reset__;";
+	
+	if (rubyExc) {
+		rb_eval_string(str);
+	} else {
+		int state;
+		rb_eval_string_protect(str, &state);
+		return state;
+	}
+	
+	return 0;
 }
 
-RB_METHOD(mriRgssMain) {
+RB_METHOD_GUARD(mriRgssMain) {
     RB_UNUSED_PARAM;
     
     while (true) {
@@ -785,15 +799,16 @@ RB_METHOD(mriRgssMain) {
             break;
         
         if (rb_obj_class(exc) == getRbData()->exc[Reset])
-            processReset();
+            processReset(true);
         else
             rb_exc_raise(exc);
     }
     
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
-RB_METHOD(mriRgssStop) {
+RB_METHOD_GUARD(mriRgssStop) {
     RB_UNUSED_PARAM;
     
     while (true)
@@ -801,6 +816,7 @@ RB_METHOD(mriRgssStop) {
     
     return Qnil;
 }
+RB_METHOD_GUARD_END
 
 RB_METHOD(_kernelCaller) {
     RB_UNUSED_PARAM;
@@ -1033,7 +1049,8 @@ static void runRMXPScripts(BacktraceData &btData) {
         if (rb_obj_class(exc) != getRbData()->exc[Reset])
             break;
         
-        processReset();
+        if (processReset(false))
+            break;
     }
 }
 
@@ -1242,6 +1259,6 @@ static void mriBindingExecute() {
     shState->rtData().rqTermAck.set();
 }
 
-static void mriBindingTerminate() { rb_raise(rb_eSystemExit, " "); }
+static void mriBindingTerminate() { throw Exception(Exception::SystemExit, " "); }
 
-static void mriBindingReset() { rb_raise(getRbData()->exc[Reset], " "); }
+static void mriBindingReset() { throw Exception(Exception::Reset, " "); }

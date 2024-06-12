@@ -31,6 +31,7 @@ struct Exception
 	enum Type
 	{
 		RGSSError,
+		Reset,
 		NoFileError,
 		IOError,
 

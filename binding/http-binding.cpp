@@ -10,10 +10,6 @@
 #include "util/json5pp.hpp"
 #include "binding-util.h"
 
-#if RAPI_MAJOR >= 2
-#include <ruby/thread.h>
-#endif
-
 #include "net/net.h"
 
 VALUE stringMap2hash(mkxp_net::StringMap &map) {
@@ -78,10 +74,8 @@ VALUE formResponse(mkxp_net::HTTPResponse &res) {
 void* httpGetInternal(void *req) {
     VALUE ret;
     
-    GUARD_EXC(
-              mkxp_net::HTTPResponse res = ((mkxp_net::HTTPRequest*)req)->get();
-              ret = formResponse(res);
-              );
+    mkxp_net::HTTPResponse res = ((mkxp_net::HTTPRequest*)req)->get();
+    ret = formResponse(res);
     
     return (void*)ret;
 }
@@ -102,7 +96,7 @@ RB_METHOD_GUARD(httpGet) {
         req.headers().insert(headers.begin(), headers.end());
     }
 #if RAPI_MAJOR >= 2
-    return (VALUE)rb_thread_call_without_gvl(httpGetInternal, &req, 0, 0);
+    return (VALUE)drop_gvl_guard(httpGetInternal, &req, 0, 0);
 #else
     return (VALUE)httpGetInternal(&req);
 #endif
@@ -122,10 +116,8 @@ void* httpPostInternal(void *args) {
     mkxp_net::HTTPRequest *req = ((httpPostInternalArgs*)args)->req;
     mkxp_net::StringMap *postData = ((httpPostInternalArgs*)args)->postData;
     
-    GUARD_EXC(
-              mkxp_net::HTTPResponse res = req->post(*postData);
-              ret = formResponse(res);
-              );
+    mkxp_net::HTTPResponse res = req->post(*postData);
+    ret = formResponse(res);
     
     return (void*)ret;
 }
@@ -149,7 +141,7 @@ RB_METHOD_GUARD(httpPost) {
     mkxp_net::StringMap postData = hash2StringMap(postDataHash);
     httpPostInternalArgs args {&req, &postData};
 #if RAPI_MAJOR >= 2
-    return (VALUE)rb_thread_call_without_gvl(httpPostInternal, &args, 0, 0);
+    return (VALUE)drop_gvl_guard(httpPostInternal, &args, 0, 0);
 #else
     return httpPostInternal(&args);
 #endif
@@ -170,16 +162,14 @@ void* httpPostBodyInternal(void *args) {
     const char *reqbody = ((httpPostBodyInternalArgs*)args)->body;
     const char *reqctype = ((httpPostBodyInternalArgs*)args)->ctype;
     
-    GUARD_EXC(
-              mkxp_net::HTTPResponse res = req->post(reqbody, reqctype);
-              ret = formResponse(res);
-              );
+    mkxp_net::HTTPResponse res = req->post(reqbody, reqctype);
+    ret = formResponse(res);
     
     return (void*)ret;
 }
 #endif
 
-RB_METHOD(httpPostBody) {
+RB_METHOD_GUARD(httpPostBody) {
     RB_UNUSED_PARAM;
     
     VALUE path, body, ctype, rheaders;
@@ -197,11 +187,12 @@ RB_METHOD(httpPostBody) {
     
     httpPostBodyInternalArgs args {&req, RSTRING_PTR(body), RSTRING_PTR(ctype)};
 #if RAPI_MAJOR >= 2
-    return (VALUE)rb_thread_call_without_gvl(httpPostBodyInternal, &args, 0, 0);
+    return (VALUE)drop_gvl_guard(httpPostBodyInternal, &args, 0, 0);
 #else
     return httpPostBodyInternal(&args);
 #endif
 }
+RB_METHOD_GUARD_END
 
 VALUE json2rb(json5pp::value const &v) {
     if (v.is_null())
