@@ -189,7 +189,7 @@ $(DOWNLOADS)/sdl2/cmakebuild/Makefile: $(DOWNLOADS)/sdl2/CMakeLists.txt
 	$(CMAKE) -DBUILD_SHARED_LIBS=no
 
 $(DOWNLOADS)/sdl2/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/Eblo/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-2.28.1
+	$(CLONE) $(GITHUB)/Eblo/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-2.28.5
 	
 # SDL_image
 sdl2image: init_dirs sdl2 $(LIBDIR)/libSDL2_image.a
