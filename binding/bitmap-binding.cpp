@@ -128,9 +128,11 @@ RB_METHOD_GUARD(bitmapBlt) {
                 &opacity RB_ARG_END);
     
     src = getPrivateDataCheck<Bitmap>(srcObj, BitmapType);
-    srcRect = getPrivateDataCheck<Rect>(srcRectObj, RectType);
+    if (src) {
+        srcRect = getPrivateDataCheck<Rect>(srcRectObj, RectType);
     
-    GFX_GUARD_EXC(b->blt(x, y, *src, srcRect->toIntRect(), opacity););
+        GFX_GUARD_EXC(b->blt(x, y, *src, srcRect->toIntRect(), opacity););
+    }
     
     return self;
 }
@@ -151,11 +153,13 @@ RB_METHOD_GUARD(bitmapStretchBlt) {
                 &opacity RB_ARG_END);
     
     src = getPrivateDataCheck<Bitmap>(srcObj, BitmapType);
-    destRect = getPrivateDataCheck<Rect>(destRectObj, RectType);
-    srcRect = getPrivateDataCheck<Rect>(srcRectObj, RectType);
-    
-    GFX_GUARD_EXC(b->stretchBlt(destRect->toIntRect(), *src, srcRect->toIntRect(),
-                            opacity););
+    if (src) {
+        destRect = getPrivateDataCheck<Rect>(destRectObj, RectType);
+        srcRect = getPrivateDataCheck<Rect>(srcRectObj, RectType);
+        
+        GFX_GUARD_EXC(b->stretchBlt(destRect->toIntRect(), *src, srcRect->toIntRect(),
+                                    opacity););
+    }
     
     return self;
 }
@@ -319,7 +323,40 @@ RB_METHOD_GUARD(bitmapTextSize) {
 }
 RB_METHOD_GUARD_END
 
-DEF_GFX_PROP_OBJ_VAL(Bitmap, Font, Font, "font")
+RB_METHOD(BitmapGetFont) {
+    RB_UNUSED_PARAM;
+    checkDisposed<Bitmap>(self);
+    return rb_iv_get(self, "font");
+}
+RB_METHOD_GUARD(BitmapSetFont) {
+    rb_check_argc(argc, 1);
+    Bitmap *b = getPrivateData<Bitmap>(self);
+    VALUE propObj = *argv;
+    
+    Font *prop = getPrivateDataCheck<Font>(propObj, FontType);
+    if (prop) {
+        GFX_GUARD_EXC(b->setFont(*prop);)
+        
+        VALUE f = rb_iv_get(self, "font");
+        if (f) {
+            rb_iv_set(f, "name", rb_iv_get(propObj, "name"));
+            rb_iv_set(f, "size", rb_iv_get(propObj, "size"));
+            rb_iv_set(f, "bold", rb_iv_get(propObj, "bold"));
+            rb_iv_set(f, "italic", rb_iv_get(propObj, "italic"));
+
+            if (rgssVer >= 2) {
+                rb_iv_set(f, "shadow", rb_iv_get(propObj, "shadow"));
+            }
+
+            if (rgssVer >= 3) {
+                rb_iv_set(f, "outline", rb_iv_get(propObj, "outline"));
+            }
+        }
+    }
+    
+    return propObj;
+}
+RB_METHOD_GUARD_END
 
 RB_METHOD_GUARD(bitmapGradientFillRect) {
     Bitmap *b = getPrivateData<Bitmap>(self);
@@ -589,6 +626,8 @@ RB_METHOD_GUARD(bitmapAddFrame){
     rb_scan_args(argc, argv, "11", &srcBitmap, &position);
     
     Bitmap *src = getPrivateDataCheck<Bitmap>(srcBitmap, BitmapType);
+    if (!src)
+        raiseDisposedAccess(srcBitmap);
     
     Bitmap *b = getPrivateData<Bitmap>(self);
     

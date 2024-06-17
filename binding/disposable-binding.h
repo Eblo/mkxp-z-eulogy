@@ -124,8 +124,8 @@ template<class C>
 RB_METHOD(disposableDispose)
 {
 	RB_UNUSED_PARAM;
-
-	C *d = getPrivateData<C>(self);
+	
+	C *d = getPrivateDataNoRaise<C>(self);
 
 	if (!d)
 		return Qnil;
@@ -149,7 +149,7 @@ RB_METHOD(disposableIsDisposed)
 {
 	RB_UNUSED_PARAM;
 
-	C *d = getPrivateData<C>(self);
+	C *d = getPrivateDataNoRaise<C>(self);
 
 	if (!d)
 		return Qtrue;

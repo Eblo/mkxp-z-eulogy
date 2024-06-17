@@ -198,20 +198,50 @@ template <rb_data_type_t *rbType> static VALUE classAllocate(VALUE klass) {
 }
 #endif
 
+#if RAPI_FULL > 187
+#define CLASS_ALLOCATE_PRE_INIT(Name, initializeFunc)  \
+static VALUE Name##AllocatePreInit(VALUE klass) {      \
+  VALUE ret = classAllocate<& Name##Type>(klass);     \
+                                                       \
+  initializeFunc(0, 0, ret);                           \
+                                                       \
+  return ret;                                          \
+}
+#else
+#define CLASS_ALLOCATE_PRE_INIT(Name, initializeFunc)  \
+static VALUE Name##AllocatePreInit(VALUE klass) {      \
+  VALUE ret = Name##Allocate(klass);                   \
+                                                       \
+  initializeFunc(0, 0, ret);                           \
+                                                       \
+  return ret;                                          \
+}
+#endif
+
 template <class C> static void freeInstance(void *inst) {
     delete static_cast<C *>(inst);
 }
 
 void raiseDisposedAccess(VALUE self);
 
-template <class C> inline C *getPrivateData(VALUE self) {
+template <class C> inline C *getPrivateDataNoRaise(VALUE self) {
 #if RAPI_FULL > 187
-    C *c = static_cast<C *>(RTYPEDDATA_DATA(self));
+    return static_cast<C *>(RTYPEDDATA_DATA(self));
 #else
-    C *c = static_cast<C *>(DATA_PTR(self));
+    return static_cast<C *>(DATA_PTR(self));
 #endif
+}
+
+template <class C> inline C *getPrivateData(VALUE self) {
+    C *c = getPrivateDataNoRaise<C>(self);
+    
     if (!c) {
-        raiseRbExc(Exception(Exception::MKXPError, "No instance data for variable (missing call to super?)"));
+        //raiseRbExc(Exception(Exception::MKXPError, "No instance data for variable (missing call to super?)"));
+        
+        /* FIXME: MiniFFI and FileInt don't have default allocations
+         * despite not being disposables. Should they be fixed,
+         * or just left with a misleading error message? */
+        raiseDisposedAccess(self);
     }
     return c;
 }
@@ -246,9 +276,28 @@ getPrivateDataCheck(VALUE self, const char *type)
 }
 
 static inline void setPrivateData(VALUE self, void *p) {
+    /* RGSS's behavior is to just leak memory if a disposable is reinitialized,
+     * with the original disposable being left permanently instantiated,
+     * but that's (1) bad, and (2) would currently cause memory access issues
+     * when things like a sprite's src_rect inevitably get GC'd, so we're not
+     * copying that. */
 #if RAPI_FULL > 187
+    // Free the old value if it already exists (initialize called twice?)
+    if (RTYPEDDATA_DATA(self) && (RTYPEDDATA_DATA(self) != p)) {
+        /* RUBY_TYPED_NEVER_FREE == 0, and we don't use
+         * RUBY_TYPED_DEFAULT_FREE for our stuff, so just
+         * checking if it's truthy should be fine */
+        if (RTYPEDDATA_TYPE(self)->function.dfree)
+            (*RTYPEDDATA_TYPE(self)->function.dfree)(RTYPEDDATA_DATA(self));
+    }
     RTYPEDDATA_DATA(self) = p;
 #else
+    // Free the old value if it already exists (initialize called twice?)
+    if (DATA_PTR(self) && (DATA_PTR(self) != p)) {
+        /* As above, just check if it's truthy */
+        if (RDATA(self)->dfree)
+            (*RDATA(self)->dfree)(DATA_PTR(self));
+    }
     DATA_PTR(self) = p;
 #endif
 }

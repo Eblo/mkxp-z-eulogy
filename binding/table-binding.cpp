@@ -57,9 +57,14 @@ RB_METHOD(tableInitialize) {
 
   parseArgsTableSizes(argc, argv, &x, &y, &z);
 
-  Table *t = new Table(x, y, z);
+  Table *t = getPrivateDataNoRaise<Table>(self);
+  if (t) {
+    t->resize(x, y, z);
+  } else {
+    t = new Table(x, y, z);
 
-  setPrivateData(self, t);
+    setPrivateData(self, t);
+  }
 
   return self;
 }
@@ -152,13 +157,20 @@ RB_METHOD_GUARD_END
 MARSH_LOAD_FUN(Table)
 INITCOPY_FUN(Table)
 
+
+RB_METHOD(tableInitializeDefault) {
+  Table *t = new Table(0, 0, 0);
+
+  setPrivateData(self, t);
+
+  return self;
+}
+
+CLASS_ALLOCATE_PRE_INIT(Table, tableInitializeDefault);
+
 void tableBindingInit() {
   VALUE klass = rb_define_class("Table", rb_cObject);
-#if RAPI_FULL > 187
-  rb_define_alloc_func(klass, classAllocate<&TableType>);
-#else
-  rb_define_alloc_func(klass, TableAllocate);
-#endif
+  rb_define_alloc_func(klass, TableAllocatePreInit);
 
   serializableBindingInit<Table>(klass);
 

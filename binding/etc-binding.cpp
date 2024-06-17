@@ -54,6 +54,26 @@ EQUAL_FUN(Color)
 EQUAL_FUN(Tone)
 EQUAL_FUN(Rect)
 
+#define INIT_FUN(Klass, param_type, param_t_s, last_param_def)                 \
+  RB_METHOD(Klass##Initialize) {                                               \
+    Klass *k;                                                                  \
+    if (argc == 0) {                                                           \
+      k = new Klass();                                                         \
+    } else {                                                                   \
+      param_type p1, p2, p3, p4 = last_param_def;                              \
+      rb_get_args(argc, argv, param_t_s, &p1, &p2, &p3, &p4 RB_ARG_END);       \
+      k = new Klass(p1, p2, p3, p4);                                           \
+    }                                                                          \
+    Klass *orig = getPrivateDataNoRaise<Klass>(self);                          \
+    if (orig) {                                                                \
+      *orig = *k;                                                              \
+      delete k;                                                                \
+    } else {                                                                   \
+    setPrivateData(self, k);                                                   \
+    }                                                                          \
+    return self;                                                               \
+  }
+
 INIT_FUN(Color, double, "fff|f", 255)
 INIT_FUN(Tone, double, "fff|f", 0)
 INIT_FUN(Rect, int, "iiii", 0)
@@ -118,6 +138,46 @@ MARSH_LOAD_FUN(Rect)
 INITCOPY_FUN(Tone)
 INITCOPY_FUN(Color)
 INITCOPY_FUN(Rect)
+
+CLASS_ALLOCATE_PRE_INIT(Tone, ToneInitialize);
+CLASS_ALLOCATE_PRE_INIT(Color, ColorInitialize);
+CLASS_ALLOCATE_PRE_INIT(Rect, RectInitialize);
+
+#define INIT_BIND(Klass)                                                       \
+  {                                                                            \
+    klass = rb_define_class(#Klass, rb_cObject);                               \
+    rb_define_alloc_func(klass, Klass##AllocatePreInit);                       \
+    rb_define_class_method(klass, "_load", Klass##Load);                       \
+    serializableBindingInit<Klass>(klass);                                     \
+    _rb_define_method(klass, "initialize", Klass##Initialize);                 \
+    _rb_define_method(klass, "initialize_copy", Klass##InitializeCopy);        \
+    _rb_define_method(klass, "set", Klass##Set);                               \
+    _rb_define_method(klass, "==", Klass##Equal);                              \
+    _rb_define_method(klass, "===", Klass##Equal);                             \
+    _rb_define_method(klass, "eql?", Klass##Equal);                            \
+    _rb_define_method(klass, "to_s", Klass##Stringify);                        \
+    _rb_define_method(klass, "inspect", Klass##Stringify);                     \
+  }
+
+#define MRB_ATTR_R(Class, attr)                                                \
+  mrb_define_method(mrb, klass, #attr, Class##Get_##attr, MRB_ARGS_NONE())
+#define MRB_ATTR_W(Class, attr)                                                \
+  mrb_define_method(mrb, klass, #attr "=", Class##Set_##attr, MRB_ARGS_REQ(1))
+#define MRB_ATTR_RW(Class, attr)                                               \
+  {                                                                            \
+    MRB_ATTR_R(Class, attr);                                                   \
+    MRB_ATTR_W(Class, attr);                                                   \
+  }
+
+#define RB_ATTR_R(Klass, Attr, attr)                                           \
+  _rb_define_method(klass, #attr, Klass##Get##Attr)
+#define RB_ATTR_W(Klass, Attr, attr)                                           \
+  _rb_define_method(klass, #attr "=", Klass##Set##Attr)
+#define RB_ATTR_RW(Klass, Attr, attr)                                          \
+  {                                                                            \
+    RB_ATTR_R(Klass, Attr, attr);                                              \
+    RB_ATTR_W(Klass, Attr, attr);                                              \
+  }
 
 void etcBindingInit() {
   VALUE klass;
