@@ -1035,7 +1035,6 @@
 		3B426F6E256B8AC0009EA00F /* filesystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = filesystem.hpp; sourceTree = "<group>"; };
 		3B426F6F256B8AC0009EA00F /* fs_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fs_impl.hpp; sourceTree = "<group>"; };
 		3B426F70256B8AC0009EA00F /* fs_std_fwd.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fs_std_fwd.hpp; sourceTree = "<group>"; };
-		3B480E9325DCBDD6001686B4 /* sdl_codes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sdl_codes.h; path = views/sdl_codes.h; sourceTree = "<group>"; };
 		3B480E9E25DCD16D001686B4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfluidsynth.dylib; path = Dependencies/Frameworks/libfluidsynth.dylib; sourceTree = "<group>"; };
 		3B522DB2259BC037003301C4 /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
@@ -1679,7 +1678,6 @@
 		3B3F7D1325B19C5A00EA5F1C /* MacOS */ = {
 			isa = PBXGroup;
 			children = (
-				3B480E9325DCBDD6001686B4 /* sdl_codes.h */,
 				96573E7B27913B46002C3E77 /* TouchBar.h */,
 				96573E7A27913B46002C3E77 /* TouchBar.mm */,
 				96573E80279152DC002C3E77 /* TouchBar.xcassets */,
