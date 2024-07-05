@@ -390,10 +390,14 @@ void EventThread::process(RGSSThreadData &rtData)
                 
             case SDL_CONTROLLERAXISMOTION:
                 controllerState.axes[event.caxis.axis] = event.caxis.value;
-                lastInputDevice = LAST_INPUT_DEVICE_GAMEPAD;
-                lastInputDesc.type = CAxis;
-                lastInputDesc.d.ca.axis = (SDL_GameControllerAxis) event.caxis.axis;
-                lastInputDesc.d.ca.dir = event.caxis.value < 0 ? Negative : Positive;
+                // Take deadzone into account when storing last input
+                // This is based on percentage, so multiply by the max value
+                if(std::abs(event.caxis.value) > rtData.config.axisDeadzone[event.caxis.axis] * 32767) {
+                    lastInputDevice = LAST_INPUT_DEVICE_GAMEPAD;
+                    lastInputDesc.type = CAxis;
+                    lastInputDesc.d.ca.axis = (SDL_GameControllerAxis) event.caxis.axis;
+                    lastInputDesc.d.ca.dir = event.caxis.value < 0 ? Negative : Positive;
+                }
                 break;
                 
             case SDL_CONTROLLERDEVICEADDED:

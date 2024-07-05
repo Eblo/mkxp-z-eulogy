@@ -158,7 +158,9 @@ struct Config {
         int keyMultiplier;
         int keyAdditive;
     } encryption;
-    
+
+    std::vector<double> axisDeadzone;
+
     Config();
     
     bool fontIsSolid(const char *fontName) const;
