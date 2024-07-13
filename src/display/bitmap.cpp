@@ -1991,6 +1991,7 @@ int Bitmap::currentFrameI() const
 int Bitmap::addFrame(Bitmap &source, int position)
 {
     guardDisposed();
+    source.guardDisposed();
     
     GUARD_MEGA;
     
