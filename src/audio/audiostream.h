@@ -127,7 +127,8 @@ struct AudioStream
 	void play(const std::string &filename,
 	          int volume,
 	          int pitch,
-	          float offset = 0);
+	          float offset = 0,
+			  bool doFadein = true);
 	void stop();
 	void fadeOut(int duration);
 	void seek(float offset);

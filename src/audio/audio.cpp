@@ -293,6 +293,7 @@ void Audio::bgmPlay(const char *filename,
                     int volume,
                     int pitch,
                     float pos,
+                    bool fadein,
                     int track)
 {
     if (track == -127) {
@@ -305,7 +306,7 @@ void Audio::bgmPlay(const char *filename,
         
         track = 0;
     }
-	p->getTrackByIndex(track)->play(filename, volume, pitch, pos);
+	p->getTrackByIndex(track)->play(filename, volume, pitch, pos, fadein);
 }
 
 void Audio::bgmStop(int track)

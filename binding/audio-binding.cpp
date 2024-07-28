@@ -94,9 +94,10 @@ RB_METHOD(audio_bgmPlay)
     int volume = 100;
     int pitch = 100;
     double pos = 0.0;
+	bool fadein = true;
     VALUE track = Qnil;
-    rb_get_args(argc, argv, "z|iifo", &filename, &volume, &pitch, &pos, &track RB_ARG_END);
-    GUARD_EXC( shState->audio().bgmPlay(filename, volume, pitch, pos, MAYBE_NIL_TRACK(track)); )
+    rb_get_args(argc, argv, "z|iifbo", &filename, &volume, &pitch, &pos, &fadein, &track RB_ARG_END);
+    GUARD_EXC( shState->audio().bgmPlay(filename, volume, pitch, pos, fadein, MAYBE_NIL_TRACK(track)); )
     return Qnil;
 }
 
