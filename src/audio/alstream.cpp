@@ -46,7 +46,7 @@ ALStream::ALStream(LoopMode loopMode,
 {
 	alSrc = AL::Source::gen();
 
-	AL::Source::setVolume(alSrc, 1.0f);
+	AL::Source::setVolume(alSrc, 1.0f, AL::Source::Linear);
 	AL::Source::setPitch(alSrc, 1.0f);
 	AL::Source::detachBuffer(alSrc);
 
@@ -153,7 +153,7 @@ void ALStream::pause()
 
 void ALStream::setVolume(float value)
 {
-	AL::Source::setVolume(alSrc, value);
+	AL::Source::setVolume(alSrc, value, AL::Source::Linear);
 }
 
 void ALStream::setPitch(float value)

@@ -27,6 +27,8 @@
 
 #include <SDL_audio.h>
 #include <assert.h>
+#include <cfloat>
+#include <cmath>
 
 namespace AL
 {
@@ -166,8 +168,23 @@ namespace Source
 		return value;
 	}
 
-	inline void setVolume(Source::ID id, float value)
+	enum VolumeScale
 	{
+		Linear,
+		Db35,
+	};
+
+	inline void setVolume(Source::ID id, float value, VolumeScale scale)
+	{
+		switch (scale) {
+			case VolumeScale::Linear:
+				break;
+			case VolumeScale::Db35:
+				if (value > FLT_EPSILON) {
+					value = std::powf(10., -(35. / 20.) * (1. - value));
+				}
+				break;
+		}
 		alSourcef(id.al, AL_GAIN, value);
 	}
 
