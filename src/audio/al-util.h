@@ -170,19 +170,19 @@ namespace Source
 
 	enum VolumeScale
 	{
-		Linear = 0,
-		Db35 = 1,
+		Db35 = 0,
+		Linear = 1,
 	};
 
 	inline void setVolume(Source::ID id, float value, VolumeScale scale)
 	{
 		switch (scale) {
-			case VolumeScale::Db35:
+			case Linear:
+				break;
+			default:
 				if (value > FLT_EPSILON) {
 					value = std::powf(10.0f, -(35.0f / 20.0f) * (1.0f - value));
 				}
-				break;
-			default:
 				break;
 		}
 		alSourcef(id.al, AL_GAIN, value * 0.8f);

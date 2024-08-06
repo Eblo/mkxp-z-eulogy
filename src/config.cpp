@@ -173,7 +173,7 @@ void Config::read(int argc, char *argv[]) {
         {"dataPathApp", ""},
         {"iconPath", ""},
         {"execName", "Game"},
-        {"volumeScale", 1},
+        {"volumeScale", 0},
         {"midiSoundFont", ""},
         {"midiChorus", false},
         {"midiReverb", false},
