@@ -358,9 +358,7 @@ void AudioStream::fadeInThread()
 			break;
 		}
 
-		/* Quadratic increase (not really the same as
-		 * in RMVXA, but close enough) */
-		setVolume(FadeIn, prog*prog);
+		setVolume(FadeIn, prog);
 
 		unlockStream();
 
