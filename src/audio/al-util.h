@@ -181,11 +181,11 @@ namespace Source
 				break;
 			case VolumeScale::Db35:
 				if (value > FLT_EPSILON) {
-					value = std::powf(10., -(35. / 20.) * (1. - value));
+					value = std::powf(10.0f, -(35.0f / 20.0f) * (1.0f - value));
 				}
 				break;
 		}
-		alSourcef(id.al, AL_GAIN, value);
+		alSourcef(id.al, AL_GAIN, value * 0.8f);
 	}
 
 	inline void setPitch(Source::ID id, float value)
@@ -267,6 +267,5 @@ inline ALenum chooseALFormat(int sampleSize, int channelCount)
 
 #define AUDIO_SLEEP 10
 #define STREAM_BUF_SIZE 32768
-#define GLOBAL_VOLUME 0.8f
 
 #endif // ALUTIL_H

@@ -256,7 +256,7 @@ float AudioStream::playingOffset()
 
 void AudioStream::updateVolume()
 {
-	float vol = GLOBAL_VOLUME;
+	float vol = 1.0f;
 
 	for (size_t i = 0; i < VolumeTypeCount; ++i)
 		vol *= volumes[i];
