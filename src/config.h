@@ -22,7 +22,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "al-util.h"
 #include "util/json5pp.hpp"
 
 #include <set>
