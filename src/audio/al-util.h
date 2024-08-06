@@ -181,7 +181,7 @@ namespace Source
 				break;
 			default:
 				if (value > FLT_EPSILON) {
-					value = std::powf(10.0f, -(35.0f / 20.0f) * (1.0f - value));
+					value = std::pow(10.0f, -(35.0f / 20.0f) * (1.0f - value));
 				}
 				break;
 		}
