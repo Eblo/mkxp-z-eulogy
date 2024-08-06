@@ -49,6 +49,8 @@ struct SoundEmitter
 	/* Indices of sources, sorted by priority (lowest first) */
 	std::vector<size_t> srcPrio;
 
+	AL::Source::VolumeScale volumeScale;
+
 	SoundEmitter(const Config &conf);
 	~SoundEmitter();
 

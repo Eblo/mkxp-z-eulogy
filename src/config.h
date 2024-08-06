@@ -22,6 +22,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "al-util.h"
 #include "util/json5pp.hpp"
 
 #include <set>
@@ -79,6 +80,8 @@ struct Config {
     std::string iconPath;
     std::string execName;
     std::string titleLanguage;
+    
+    int volumeScale;
     
     struct {
         std::string soundFont;

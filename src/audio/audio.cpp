@@ -69,15 +69,15 @@ struct AudioPrivate
 	} meWatch;
 
 	AudioPrivate(RGSSThreadData &rtData)
-	    : bgs(ALStream::Looped, "bgs"),
-	      me(ALStream::NotLooped, "me"),
+	    : bgs(ALStream::Looped, static_cast<AL::Source::VolumeScale>(rtData.config.volumeScale), "bgs"),
+	      me(ALStream::NotLooped, static_cast<AL::Source::VolumeScale>(rtData.config.volumeScale), "me"),
 	      se(rtData.config),
 	      syncPoint(rtData.syncPoint),
           volumeRatio(1)
 	{
         for (int i = 0; i < rtData.config.BGM.trackCount; i++) {
             std::string id = std::string("bgm" + std::to_string(i));
-            bgmTracks.push_back(new AudioStream(ALStream::Looped, id.c_str()));
+            bgmTracks.push_back(new AudioStream(ALStream::Looped, static_cast<AL::Source::VolumeScale>(rtData.config.volumeScale), id.c_str()));
         }
         
 		meWatch.state = MeNotPlaying;

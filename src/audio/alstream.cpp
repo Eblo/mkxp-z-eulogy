@@ -36,9 +36,11 @@
 #include <SDL_timer.h>
 
 ALStream::ALStream(LoopMode loopMode,
+		           AL::Source::VolumeScale volumeScale,
 		           const std::string &threadId)
 	: looped(loopMode == Looped),
 	  state(Closed),
+	  volumeScale(volumeScale),
 	  source(0),
 	  thread(0),
 	  preemptPause(false),
@@ -46,7 +48,7 @@ ALStream::ALStream(LoopMode loopMode,
 {
 	alSrc = AL::Source::gen();
 
-	AL::Source::setVolume(alSrc, 1.0f, AL::Source::Linear);
+	AL::Source::setVolume(alSrc, 1.0f, volumeScale);
 	AL::Source::setPitch(alSrc, 1.0f);
 	AL::Source::detachBuffer(alSrc);
 
@@ -153,7 +155,7 @@ void ALStream::pause()
 
 void ALStream::setVolume(float value)
 {
-	AL::Source::setVolume(alSrc, value, AL::Source::Linear);
+	AL::Source::setVolume(alSrc, value, volumeScale);
 }
 
 void ALStream::setPitch(float value)

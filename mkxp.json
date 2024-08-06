@@ -353,6 +353,16 @@
     //
     // "YJITEnable": false,
 
+    // Determines how the volume value of a sound affects how loud the sound is.
+    // The stock RPG Maker runtimes use a 35 dB scale for volume (option 1),
+    // but other runtimes might use a different scale.
+    // 0: linear (sound amplitude is multiplied by the volume)
+    // 1: 35 dB (a gain of -0.35 dB is applied to the sound for every percent
+    //           the volume is set below 100%)
+    // (default: 1)
+    //
+    // "volumeScale": 1,
+
     // SoundFont to use for midi playback (via fluidsynth)
     // (default: none)
     //

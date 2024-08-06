@@ -29,10 +29,11 @@
 #include <SDL_timer.h>
 
 AudioStream::AudioStream(ALStream::LoopMode loopMode,
+                         AL::Source::VolumeScale volumeScale,
                          const std::string &threadId)
 	: extPaused(false),
 	  noResumeStop(false),
-	  stream(loopMode, threadId)
+	  stream(loopMode, volumeScale, threadId)
 {
 	current.volume = 1.0f;
 	current.pitch = 1.0f;
