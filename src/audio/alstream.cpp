@@ -195,7 +195,7 @@ struct ALStreamOpenHandler : FileSystem::OpenHandler
 	std::string errorMsg;
 
 	ALStreamOpenHandler(bool looped)
-	    : looped(looped), source(0), fallbackMode(0)
+	    : looped(looped), source(0)
 	{}
 
 	bool tryRead(SDL_RWops &ops, const char *ext)
@@ -224,7 +224,7 @@ struct ALStreamOpenHandler : FileSystem::OpenHandler
 				}
 			}
 
-			source = createSDLSource(ops, ext, STREAM_BUF_SIZE, looped, fallbackMode);
+			source = createSDLSource(ops, ext, STREAM_BUF_SIZE, looped);
 		}
 		catch (const Exception &e)
 		{
@@ -256,13 +256,6 @@ void ALStream::openSource(const std::string &filename)
 	}
 
 	close();
-
-	// Try fallback mode, e.g. for handling S32->F32 sample format conversion
-	if (!handler.source)
-	{
-		handler.fallbackMode = 1;
-		shState->fileSystem().openRead(handler, filename.c_str());
-	}
 
 	if (!handler.source)
 	{

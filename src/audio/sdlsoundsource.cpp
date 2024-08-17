@@ -24,10 +24,15 @@
 
 #include <SDL_sound.h>
 
+static int SDL_RWopsCloseNoop(SDL_RWops *ops) {
+	return 0;
+}
+
 struct SDLSoundSource : ALDataSource
 {
 	Sound_Sample *sample;
 	SDL_RWops srcOps;
+	SDL_RWops unclosableOps;
 	uint8_t sampleSize;
 	bool looped;
 
@@ -39,14 +44,52 @@ struct SDLSoundSource : ALDataSource
 	               uint32_t maxBufSize,
 	               bool looped)
 	    : srcOps(ops),
+	      unclosableOps(ops),
 	      looped(looped)
 	{
-		sample = Sound_NewSample(&srcOps, extension, 0, maxBufSize);
-
+		/* A copy of srcOps with a no-op close function,
+		 * so we can reuse the ops if we need to change the format. */
+		unclosableOps.close = SDL_RWopsCloseNoop;
+		
+		sample = Sound_NewSample(&unclosableOps, extension, 0, maxBufSize);
+		
 		if (!sample)
 		{
-			SDL_RWclose(&ops);
+			SDL_RWclose(&srcOps);
 			throw Exception(Exception::SDLError, "SDL_sound: %s", Sound_GetError());
+		}
+
+		bool validFormat = true;
+		
+		switch (sample->actual.format)
+		{
+			// OpenAL Soft doesn't support S32 formats.
+			// https://github.com/kcat/openal-soft/issues/934
+			case AUDIO_S32LSB :
+			case AUDIO_S32MSB :
+				validFormat = false;
+		}
+
+		if (!validFormat)
+		{
+			// Unfortunately there's no way to change the desired format of a sample.
+			// https://github.com/icculus/SDL_sound/issues/91
+			// So we just have to close the sample (which closes the file too),
+			// and retry with a new desired format.
+			Sound_FreeSample(sample);
+			SDL_RWseek(&unclosableOps, 0, RW_SEEK_SET);
+			
+			Sound_AudioInfo desired;
+			SDL_memset(&desired, '\0', sizeof (Sound_AudioInfo));
+			desired.format = AUDIO_F32SYS;
+
+			sample = Sound_NewSample(&unclosableOps, extension, &desired, maxBufSize);
+
+			if (!sample)
+			{
+				SDL_RWclose(&srcOps);
+				throw Exception(Exception::SDLError, "SDL_sound: %s", Sound_GetError());
+			}
 		}
 
 		sampleSize = formatSampleSize(sample->actual.format);
@@ -57,8 +100,8 @@ struct SDLSoundSource : ALDataSource
 
 	~SDLSoundSource()
 	{
-		/* This also closes 'srcOps' */
 		Sound_FreeSample(sample);
+		SDL_RWclose(&srcOps);
 	}
 
 	Status fillBuffer(AL::Buffer::ID alBuffer)
