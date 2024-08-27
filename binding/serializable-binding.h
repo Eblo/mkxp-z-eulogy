@@ -46,10 +46,8 @@ serializableDump(int, VALUE *, VALUE self)
 	}
 
 	if (exc) {
-		Exception e(exc->type, exc->msg);
-		delete exc;
-		rb_raise(excToRbClass(e), "%s", e.msg);
-  }
+		raiseRbExc(exc);
+	}
 
 	return data;
 }

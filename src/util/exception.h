@@ -48,7 +48,7 @@ struct Exception
 	};
 
 	Type type;
-	char msg[512];
+	std::string msg;
 
 	Exception(Type type, const char *format, ...)
 	    : type(type)
@@ -56,7 +56,8 @@ struct Exception
 		va_list ap;
 		va_start(ap, format);
 
-		vsnprintf(msg, sizeof(msg), format, ap);
+		msg.resize(512);
+		vsnprintf(&msg[0], msg.size(), format, ap);
 
 		va_end(ap);
 	}

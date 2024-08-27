@@ -75,8 +75,7 @@ RbData *getRbData();
 
 struct Exception;
 
-VALUE excToRbClass(const Exception &exc);
-void raiseRbExc(Exception exc);
+void raiseRbExc(Exception *exc);
 
 #if RAPI_MAJOR >= 2
 void *drop_gvl_guard(void *(*func)(void *), void *args,
@@ -494,9 +493,7 @@ static inline VALUE rb_file_open_str(VALUE filename, const char *mode) {
         exc = new Exception(e);                 \
     }                                           \
     if (exc) {                                  \
-        Exception e(*exc);                      \
-        delete exc;                             \
-        rb_raise(excToRbClass(e), "%s", e.msg); \
+        raiseRbExc(exc);                        \
     }                                           \
     return Qnil;                                \
 }

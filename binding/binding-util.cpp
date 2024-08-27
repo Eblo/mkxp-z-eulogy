@@ -70,16 +70,14 @@ const RbException excToRbExc[] = {
     MKXP    /* MKXPError   */
 };
 
-VALUE excToRbClass(const Exception &exc) {
+void raiseRbExc(Exception *exc) {
+  VALUE str = rb_str_new2(exc->msg.c_str());
   RbData *data = getRbData();
-  return data->exc[excToRbExc[exc.type]];
-}
+  VALUE excClass = data->exc[excToRbExc[exc->type]];
 
-void raiseRbExc(Exception exc) {
-  RbData *data = getRbData();
-  VALUE excClass = data->exc[excToRbExc[exc.type]];
+  delete exc;
 
-  rb_raise(excClass, "%s", exc.msg);
+  rb_exc_raise(rb_class_new_instance(1, &str, excClass));
 }
 
 void raiseDisposedAccess(VALUE self) {
@@ -311,9 +309,7 @@ int rb_get_args(int argc, VALUE *argv, const char *format, ...) {
     /* Raising here is probably fine, right?
      * If any methods allocate something with a destructor before
      * calling this then they can probably be fixed to not do that. */
-    Exception e(*exc);
-    delete exc;
-    rb_raise(excToRbClass(e), "%s", e.msg);
+    raiseRbExc(exc);
   }
 
   return 0;
@@ -333,7 +329,7 @@ static void *gvl_guard(void *args) {
 	try{
 		return gvl_args->func(gvl_args->args);
 	} catch (const Exception &e) {
-		gvl_args->exc = new Exception(e.type, e.msg);
+		gvl_args->exc = new Exception(e);
 	}
 	return 0;
 }
@@ -346,7 +342,7 @@ void *drop_gvl_guard(void *(*func)(void *), void *args,
 	
 	Exception *&exc = gvl_args.exc;
 	if (exc){
-		Exception e(exc->type, exc->msg);
+		Exception e(*exc);
 		delete exc;
 		throw e;
 	}
