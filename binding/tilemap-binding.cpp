@@ -126,8 +126,6 @@ RB_METHOD(tilemapInitialize) {
 RB_METHOD(tilemapGetAutotiles) {
     RB_UNUSED_PARAM;
     
-    checkDisposed<Tilemap>(self);
-    
     return rb_iv_get(self, "autotiles");
 }
 

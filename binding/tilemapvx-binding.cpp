@@ -86,8 +86,6 @@ RB_METHOD(tilemapVXInitialize) {
 RB_METHOD(tilemapVXGetBitmapArray) {
     RB_UNUSED_PARAM;
     
-    checkDisposed<TilemapVX>(self);
-    
     return rb_iv_get(self, "bitmap_array");
 }
 
