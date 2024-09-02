@@ -50,7 +50,7 @@ jobs:
         shell: msys2 {0}
         run: |
           source windows/vars.sh
-          meson build
+          meson setup build
           cd build
           ninja
           strip ./mkxp-z.exe
@@ -112,7 +112,7 @@ jobs:
       - name: Build executable
         run: |
           source linux/vars.sh
-          meson build --bindir=. --prefix=$GITHUB_WORKSPACE/build/local
+          meson setup build --bindir=. --prefix=$GITHUB_WORKSPACE/build/local
           cd build
           ninja
           ninja install
