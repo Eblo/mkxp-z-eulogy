@@ -149,7 +149,7 @@ RB_METHOD(audio_bgmSetLoopPoints)
     int newLoopStart, newLoopLength;
     VALUE track = Qnil;
     rb_get_args(argc, argv, "ii|o", &newLoopStart, &newLoopLength, &track RB_ARG_END);
-    GUARD_EXC(shState->audio().bgmSetLoopPoints(newLoopStart, newLoopLength, MAYBE_NIL_TRACK(track)); )
+    shState->audio().bgmSetLoopPoints(newLoopStart, newLoopLength, MAYBE_NIL_TRACK(track));
     return Qnil;
 }
 
@@ -161,13 +161,11 @@ RB_METHOD(audio_bgmGetComments)
 	int numComments = 0;
 	char** sourceComments;
     VALUE comments = rb_ary_new();
-    GUARD_EXC(
-		numComments = shState->audio().bgmGetNumberOfComments(MAYBE_NIL_TRACK(track));
-		sourceComments = shState->audio().bgmGetComments(MAYBE_NIL_TRACK(track));
-		for(int i = 0; i < numComments; i++) {
-			rb_ary_push(comments, rb_str_new_cstr(sourceComments[i]));
-		}
-	)
+	numComments = shState->audio().bgmGetNumberOfComments(MAYBE_NIL_TRACK(track));
+	sourceComments = shState->audio().bgmGetComments(MAYBE_NIL_TRACK(track));
+	for(int i = 0; i < numComments; i++) {
+		rb_ary_push(comments, rb_str_new_cstr(sourceComments[i]));
+	}
     return comments;
 }
 
