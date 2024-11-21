@@ -137,7 +137,7 @@ struct Movie
         io->read = readMovie;
         io->close = closeMovie;
         io->userdata = &srcOps;
-        decoder = THEORAPLAY_startDecode(io, DEF_MAX_VIDEO_FRAMES, THEORAPLAY_VIDFMT_RGBA);
+        decoder = THEORAPLAY_startDecode(io, DEF_MAX_VIDEO_FRAMES, THEORAPLAY_VIDFMT_RGBA, NULL, 1);
         if (!decoder) {
             SDL_RWclose(&srcOps);
             return false;
