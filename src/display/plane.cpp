@@ -322,13 +322,17 @@ void Plane::draw()
 			gl.GetIntegerv(GL_FRAMEBUFFER_BINDING, &originalFbo);
 
 			// Get the general purpose quad and set it to the bitmap's dimensions for shader stacking
+			// Ensure the viewport and scissorBox are isolated to the plne as well. Otherwise, bitmaps larger
+			// than the game's resolution will appear cut off past those dimensions
 			// This is needed to ensure that the shaders apply to the bitmap's size and position in isolation
 			Quad &quad = shState->gpQuad();
 			int width = p->bitmap->width(), height = p->bitmap->height();
-			FloatRect rect(0, 0, width, height);
-			quad.setTexPosRect(rect, rect);
+			FloatRect texPosRect(0, 0, width, height);
+			quad.setTexPosRect(texPosRect, texPosRect);
 			glState.blend.pushSet(false);
-			glState.viewport.pushSet(IntRect(0, 0, width, height));
+			IntRect rect(0, 0, width, height);
+			glState.viewport.pushSet(rect);
+			glState.scissorBox.pushSet(rect);
 			
 			// Bind the bitmap's frontBuffer FBO and use the temporary viewport to render the plane in isolation. This
 			// will apply the plane's main shader first as the base shader.
@@ -346,7 +350,8 @@ void Plane::draw()
 				customShader = p->bindCustomShader(i, width, height);
 			}
 
-			// Restore the original viewport and blend
+			// Restore the original scissorBox, viewport and blend
+			glState.scissorBox.pop();
 			glState.viewport.pop();
 			glState.blend.pop();
 			customShader->applyViewportProj();
