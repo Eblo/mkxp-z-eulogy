@@ -70,7 +70,6 @@ public:
 	            int pitch = 100);
 	void seStop();
 
-	void setupMidi();
 	double bgmPos(int track = 0);
 	double bgsPos();
 

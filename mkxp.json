@@ -363,22 +363,6 @@
     //
     // "volumeScale": 0,
 
-    // SoundFont to use for midi playback (via fluidsynth)
-    // (default: none)
-    //
-    // "midiSoundFont": "Audio/BGM/GMGSx.sf2",
-
-
-    // Activate "chorus" effect for midi playback
-    //
-    // "midiChorus": false,
-
-
-    // Activate "reverb" effect for midi playback
-    //
-    // "midiReverb": false,
-
-
     // Number of OpenAL sources to allocate for SE playback.
     // If there are a lot of sounds playing at the same time
     // and audibly cutting each other off, try increasing

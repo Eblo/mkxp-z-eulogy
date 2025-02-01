@@ -174,9 +174,6 @@ void Config::read(int argc, char *argv[]) {
         {"iconPath", ""},
         {"execName", "Game"},
         {"volumeScale", 0},
-        {"midiSoundFont", ""},
-        {"midiChorus", false},
-        {"midiReverb", false},
         {"SESourceCount", 6},
         {"BGMTrackCount", 1},
         {"customScript", ""},
@@ -289,9 +286,6 @@ try { exp } catch (...) {}
     SET_OPT(anyAltToggleFS, boolean);
     SET_OPT(enableReset, boolean);
     SET_OPT(volumeScale, integer);
-    SET_STRINGOPT(midi.soundFont, midiSoundFont);
-    SET_OPT_CUSTOMKEY(midi.chorus, midiChorus, boolean);
-    SET_OPT_CUSTOMKEY(midi.reverb, midiReverb, boolean);
     SET_OPT_CUSTOMKEY(SE.sourceCount, SESourceCount, integer);
     SET_OPT_CUSTOMKEY(BGM.trackCount, BGMTrackCount, integer);
     SET_STRINGOPT(customScript, customScript);

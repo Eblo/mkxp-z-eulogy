@@ -189,15 +189,6 @@ DEF_FADE( me )
 
 DEF_PLAY_STOP( se )
 
-RB_METHOD(audioSetupMidi)
-{
-	RB_UNUSED_PARAM;
-
-	shState->audio().setupMidi();
-
-	return Qnil;
-}
-
 RB_METHOD(audioReset)
 {
 	RB_UNUSED_PARAM;
@@ -238,8 +229,6 @@ audioBindingInit()
 
 	BIND_POS( bgm );
 	BIND_POS( bgs );
-
-	_rb_define_module_function(module, "setup_midi", audioSetupMidi);
 
 	BIND_PLAY_STOP( se )
 

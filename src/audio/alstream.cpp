@@ -22,12 +22,10 @@
 #include "alstream.h"
 
 #include "sharedstate.h"
-#include "sharedmidistate.h"
 #include "eventthread.h"
 #include "filesystem.h"
 #include "exception.h"
 #include "aldatasource.h"
-#include "fluid-fun.h"
 #include "sdl-util.h"
 #include "debugwriter.h"
 
@@ -214,17 +212,6 @@ struct ALStreamOpenHandler : FileSystem::OpenHandler
 			{
 				source = createVorbisSource(ops, looped);
 				return true;
-			}
-
-			if (!strcmp(sig, "MThd"))
-			{
-				shState->midiState().initIfNeeded(shState->config());
-
-				if (HAVE_FLUID)
-				{
-					source = createMidiSource(ops, looped);
-					return true;
-				}
 			}
 
 			source = createSDLSource(ops, ext, STREAM_BUF_SIZE, looped);

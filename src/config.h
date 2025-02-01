@@ -83,12 +83,6 @@ struct Config {
     int volumeScale;
     
     struct {
-        std::string soundFont;
-        bool chorus;
-        bool reverb;
-    } midi;
-    
-    struct {
         int sourceCount;
     } SE;
     

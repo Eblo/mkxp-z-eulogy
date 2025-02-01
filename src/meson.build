@@ -88,15 +88,6 @@ if host_system == 'windows'
     global_dependencies += compilers['cpp'].find_library('wsock32')
 endif
 
-if get_option('shared_fluid') == true
-    fluidsynth = dependency('fluidsynth', static: build_static)
-    add_project_arguments('-DSHARED_FLUID', language: 'cpp')
-    global_dependencies += fluidsynth
-    if host_system == 'windows'
-        global_dependencies += compilers['cpp'].find_library('dsound')
-    endif
-endif
-
 if get_option('cjk_fallback_font') == true
     add_project_arguments('-DMKXPZ_CJK_FONT', language: 'cpp')
 endif
@@ -110,8 +101,6 @@ main_source = files(
     'audio/alstream.cpp',
     'audio/audio.cpp',
     'audio/audiostream.cpp',
-    'audio/fluid-fun.cpp',
-    'audio/midisource.cpp',
     'audio/sdlsoundsource.cpp',
     'audio/soundemitter.cpp',
     'audio/vorbissource.cpp',

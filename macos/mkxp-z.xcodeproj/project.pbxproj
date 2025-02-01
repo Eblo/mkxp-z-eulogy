@@ -73,9 +73,7 @@
 		3B10EDAC2568E95E00372D13 /* sharedstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED512568E95D00372D13 /* sharedstate.cpp */; };
 		3B10EDAD2568E95E00372D13 /* filesystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED542568E95D00372D13 /* filesystem.cpp */; };
 		3B10EDAF2568E95E00372D13 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED562568E95D00372D13 /* main.cpp */; };
-		3B10EDB32568E95E00372D13 /* midisource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED5E2568E95D00372D13 /* midisource.cpp */; };
 		3B10EDB42568E95E00372D13 /* alstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED5F2568E95D00372D13 /* alstream.cpp */; };
-		3B10EDB52568E95E00372D13 /* fluid-fun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED602568E95D00372D13 /* fluid-fun.cpp */; };
 		3B10EDB62568E95E00372D13 /* sdlsoundsource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED632568E95D00372D13 /* sdlsoundsource.cpp */; };
 		3B10EDB72568E95E00372D13 /* audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED642568E95D00372D13 /* audio.cpp */; };
 		3B10EDB82568E95E00372D13 /* soundemitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED652568E95D00372D13 /* soundemitter.cpp */; };
@@ -184,12 +182,10 @@
 		3B1C23A425A19C600075EF5D /* bitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED732568E95D00372D13 /* bitmap.cpp */; };
 		3B1C23A525A19C600075EF5D /* tilemapvx-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDE12568E96A00372D13 /* tilemapvx-binding.cpp */; };
 		3B1C23A625A19C600075EF5D /* window-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDD62568E96A00372D13 /* window-binding.cpp */; };
-		3B1C23A725A19C600075EF5D /* midisource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED5E2568E95D00372D13 /* midisource.cpp */; };
 		3B1C23A825A19C600075EF5D /* graphics-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDE92568E96A00372D13 /* graphics-binding.cpp */; };
 		3B1C23A925A19C600075EF5D /* plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDA12568E95E00372D13 /* plane.cpp */; };
 		3B1C23AA25A19C600075EF5D /* tilequad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED802568E95D00372D13 /* tilequad.cpp */; };
 		3B1C23AD25A19C600075EF5D /* tileatlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED912568E95E00372D13 /* tileatlas.cpp */; };
-		3B1C23AE25A19C600075EF5D /* fluid-fun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED602568E95D00372D13 /* fluid-fun.cpp */; };
 		3B1C23AF25A19C600075EF5D /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED842568E95E00372D13 /* scene.cpp */; };
 		3B1C23B025A19C600075EF5D /* texpool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED812568E95D00372D13 /* texpool.cpp */; };
 		3B1C23B125A19C600075EF5D /* font-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDEC2568E96A00372D13 /* font-binding.cpp */; };
@@ -236,7 +232,6 @@
 		3B1C23E725A19C600075EF5D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3BDB23E22564546E00C4A63D /* icon.icns */; };
 		3B1C23E925A19C600075EF5D /* Assets.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BA08EA4256641ED00449CFF /* Assets.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B1C23EB25A19C600075EF5D /* mkxp.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BD2B7282565B35D003DAD8A /* mkxp.json */; };
-		3B1C23ED25A19C600075EF5D /* libfluidsynth.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3B1C23EE25A19C600075EF5D /* libruby.3.1.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1C230A25A144A10075EF5D /* libruby.3.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3B1C23FD25A19FB40075EF5D /* steamshim_mac_helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B1C23FC25A19FB40075EF5D /* steamshim_mac_helpers.mm */; };
 		3B1C241225A1A7120075EF5D /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1C241125A1A7120075EF5D /* libsteam_api.dylib */; };
@@ -250,8 +245,6 @@
 		3B312844259E7DC1002EAB43 /* miniffi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B312842259E7DC1002EAB43 /* miniffi.cpp */; };
 		3B480E9F25DCD174001686B4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B480E9E25DCD16D001686B4 /* GameController.framework */; };
 		3B480EA125DCD176001686B4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B480E9E25DCD16D001686B4 /* GameController.framework */; };
-		3B522DA9259BAA42003301C4 /* libfluidsynth.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3B522DAA259BAA4A003301C4 /* libfluidsynth.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3B522DC0259BD072003301C4 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B522DBF259BD072003301C4 /* net.cpp */; };
 		3B522DC1259BD072003301C4 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B522DBF259BD072003301C4 /* net.cpp */; };
 		3B522DCA259BFEE0003301C4 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B522DC8259BFEDF003301C4 /* libcrypto.a */; };
@@ -338,13 +331,11 @@
 		3BBE87B32705A73400A574AE /* bitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED732568E95D00372D13 /* bitmap.cpp */; };
 		3BBE87B42705A73400A574AE /* tilemapvx-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDE12568E96A00372D13 /* tilemapvx-binding.cpp */; };
 		3BBE87B52705A73400A574AE /* window-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDD62568E96A00372D13 /* window-binding.cpp */; };
-		3BBE87B62705A73400A574AE /* midisource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED5E2568E95D00372D13 /* midisource.cpp */; };
 		3BBE87B72705A73400A574AE /* libnsgif.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BA6944E263DAB53004194EB /* libnsgif.c */; };
 		3BBE87B82705A73400A574AE /* graphics-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDE92568E96A00372D13 /* graphics-binding.cpp */; };
 		3BBE87B92705A73400A574AE /* plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDA12568E95E00372D13 /* plane.cpp */; };
 		3BBE87BA2705A73400A574AE /* tilequad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED802568E95D00372D13 /* tilequad.cpp */; };
 		3BBE87BB2705A73400A574AE /* tileatlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED912568E95E00372D13 /* tileatlas.cpp */; };
-		3BBE87BC2705A73400A574AE /* fluid-fun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED602568E95D00372D13 /* fluid-fun.cpp */; };
 		3BBE87BD2705A73400A574AE /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED842568E95E00372D13 /* scene.cpp */; };
 		3BBE87BE2705A73400A574AE /* texpool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED812568E95D00372D13 /* texpool.cpp */; };
 		3BBE87BF2705A73400A574AE /* font-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDEC2568E96A00372D13 /* font-binding.cpp */; };
@@ -384,7 +375,6 @@
 		3BBE87FB2705A73400A574AE /* steam_appid.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B1C243E25A1B8D20075EF5D /* steam_appid.txt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE87FD2705A73400A574AE /* mkxp.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BD2B7282565B35D003DAD8A /* mkxp.json */; };
 		3BBE87FF2705A73400A574AE /* 3.1.0 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B251DA526DA2CFA00E5D09B /* 3.1.0 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3BBE88012705A73400A574AE /* libfluidsynth.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE88022705A73400A574AE /* libEGL.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5E1F0925A881FB0086FFDC /* libEGL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE88042705A73400A574AE /* libsteam_api.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1C241125A1A7120075EF5D /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE88052705A73400A574AE /* libGLESv2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5E1F0A25A881FB0086FFDC /* libGLESv2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -448,12 +438,10 @@
 		3BC65DBD2584F3AD0063AFF1 /* bitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED732568E95D00372D13 /* bitmap.cpp */; };
 		3BC65DBE2584F3AD0063AFF1 /* tilemapvx-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDE12568E96A00372D13 /* tilemapvx-binding.cpp */; };
 		3BC65DBF2584F3AD0063AFF1 /* window-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDD62568E96A00372D13 /* window-binding.cpp */; };
-		3BC65DC02584F3AD0063AFF1 /* midisource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED5E2568E95D00372D13 /* midisource.cpp */; };
 		3BC65DC12584F3AD0063AFF1 /* graphics-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDE92568E96A00372D13 /* graphics-binding.cpp */; };
 		3BC65DC22584F3AD0063AFF1 /* plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDA12568E95E00372D13 /* plane.cpp */; };
 		3BC65DC32584F3AD0063AFF1 /* tilequad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED802568E95D00372D13 /* tilequad.cpp */; };
 		3BC65DC62584F3AD0063AFF1 /* tileatlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED912568E95E00372D13 /* tileatlas.cpp */; };
-		3BC65DC72584F3AD0063AFF1 /* fluid-fun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED602568E95D00372D13 /* fluid-fun.cpp */; };
 		3BC65DC82584F3AD0063AFF1 /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED842568E95E00372D13 /* scene.cpp */; };
 		3BC65DC92584F3AD0063AFF1 /* texpool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10ED812568E95D00372D13 /* texpool.cpp */; };
 		3BC65DCA2584F3AD0063AFF1 /* font-binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B10EDEC2568E96A00372D13 /* font-binding.cpp */; };
@@ -644,7 +632,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3B1C23ED25A19C600075EF5D /* libfluidsynth.dylib in Embed Frameworks */,
 				3B5E1F1525A881FE0086FFDC /* libEGL.dylib in Embed Frameworks */,
 				3B1C23EE25A19C600075EF5D /* libruby.3.1.dylib in Embed Frameworks */,
 				3B1C242025A1A8660075EF5D /* libsteam_api.dylib in Embed Frameworks */,
@@ -700,7 +687,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3B5E1F1F25A8820D0086FFDC /* libEGL.dylib in Embed Frameworks */,
-				3B522DA9259BAA42003301C4 /* libfluidsynth.dylib in Embed Frameworks */,
 				3B1C230F25A144C90075EF5D /* libruby.3.1.dylib in Embed Frameworks */,
 				3B5E1F2025A8820F0086FFDC /* libGLESv2.dylib in Embed Frameworks */,
 			);
@@ -714,7 +700,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3B5E1F1D25A882090086FFDC /* libEGL.dylib in Embed Frameworks */,
-				3B522DAA259BAA4A003301C4 /* libfluidsynth.dylib in Embed Frameworks */,
 				3B1C230C25A144A40075EF5D /* libruby.3.1.dylib in Embed Frameworks */,
 				3B5E1F1E25A8820B0086FFDC /* libGLESv2.dylib in Embed Frameworks */,
 			);
@@ -823,7 +808,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3BBE88012705A73400A574AE /* libfluidsynth.dylib in Embed Frameworks */,
 				3BBE88022705A73400A574AE /* libEGL.dylib in Embed Frameworks */,
 				3BBE88042705A73400A574AE /* libsteam_api.dylib in Embed Frameworks */,
 				3BBE88052705A73400A574AE /* libGLESv2.dylib in Embed Frameworks */,
@@ -908,11 +892,8 @@
 		3B10ED532568E95D00372D13 /* filesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filesystem.h; sourceTree = "<group>"; };
 		3B10ED542568E95D00372D13 /* filesystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = filesystem.cpp; sourceTree = "<group>"; };
 		3B10ED562568E95D00372D13 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		3B10ED5E2568E95D00372D13 /* midisource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = midisource.cpp; sourceTree = "<group>"; };
 		3B10ED5F2568E95D00372D13 /* alstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = alstream.cpp; sourceTree = "<group>"; };
-		3B10ED602568E95D00372D13 /* fluid-fun.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "fluid-fun.cpp"; sourceTree = "<group>"; };
 		3B10ED612568E95D00372D13 /* soundemitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soundemitter.h; sourceTree = "<group>"; };
-		3B10ED622568E95D00372D13 /* fluid-fun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "fluid-fun.h"; sourceTree = "<group>"; };
 		3B10ED632568E95D00372D13 /* sdlsoundsource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sdlsoundsource.cpp; sourceTree = "<group>"; };
 		3B10ED642568E95D00372D13 /* audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = audio.cpp; sourceTree = "<group>"; };
 		3B10ED652568E95D00372D13 /* soundemitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soundemitter.cpp; sourceTree = "<group>"; };
@@ -922,7 +903,6 @@
 		3B10ED692568E95D00372D13 /* al-util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "al-util.h"; sourceTree = "<group>"; };
 		3B10ED6A2568E95D00372D13 /* vorbissource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vorbissource.cpp; sourceTree = "<group>"; };
 		3B10ED6B2568E95D00372D13 /* aldatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aldatasource.h; sourceTree = "<group>"; };
-		3B10ED6C2568E95D00372D13 /* sharedmidistate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sharedmidistate.h; sourceTree = "<group>"; };
 		3B10ED6D2568E95D00372D13 /* alstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alstream.h; sourceTree = "<group>"; };
 		3B10ED702568E95D00372D13 /* tilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tilemap.h; sourceTree = "<group>"; };
 		3B10ED712568E95D00372D13 /* tilemap-common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "tilemap-common.h"; sourceTree = "<group>"; };
@@ -1036,7 +1016,6 @@
 		3B426F6F256B8AC0009EA00F /* fs_impl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fs_impl.hpp; sourceTree = "<group>"; };
 		3B426F70256B8AC0009EA00F /* fs_std_fwd.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fs_std_fwd.hpp; sourceTree = "<group>"; };
 		3B480E9E25DCD16D001686B4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
-		3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfluidsynth.dylib; path = Dependencies/Frameworks/libfluidsynth.dylib; sourceTree = "<group>"; };
 		3B522DB2259BC037003301C4 /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 		3B522DBD259BD046003301C4 /* httplib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = httplib.h; sourceTree = "<group>"; };
 		3B522DBF259BD072003301C4 /* net.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = net.cpp; sourceTree = "<group>"; };
@@ -1488,8 +1467,6 @@
 				3B10ED5F2568E95D00372D13 /* alstream.cpp */,
 				3B10ED642568E95D00372D13 /* audio.cpp */,
 				3B10ED662568E95D00372D13 /* audiostream.cpp */,
-				3B10ED602568E95D00372D13 /* fluid-fun.cpp */,
-				3B10ED5E2568E95D00372D13 /* midisource.cpp */,
 				3B10ED632568E95D00372D13 /* sdlsoundsource.cpp */,
 				3B10ED652568E95D00372D13 /* soundemitter.cpp */,
 				3B10ED6A2568E95D00372D13 /* vorbissource.cpp */,
@@ -1498,8 +1475,6 @@
 				3B10ED6D2568E95D00372D13 /* alstream.h */,
 				3B10ED672568E95D00372D13 /* audio.h */,
 				3B10ED682568E95D00372D13 /* audiostream.h */,
-				3B10ED622568E95D00372D13 /* fluid-fun.h */,
-				3B10ED6C2568E95D00372D13 /* sharedmidistate.h */,
 				3B10ED612568E95D00372D13 /* soundemitter.h */,
 			);
 			path = audio;
@@ -1754,7 +1729,6 @@
 				3BC65D7D2584F3780063AFF1 /* libfreetype.a */,
 				3BF5B4BC2685881C00A3B240 /* libSDL2_sound.a */,
 				3BAEB1432673DBE700AC177B /* libuchardet.a */,
-				3B522DA1259BAA13003301C4 /* libfluidsynth.dylib */,
 				3B1C230D25A144BF0075EF5D /* libruby.3.1.dylib */,
 				96563584279A5ADA003D6A75 /* libtheora.a */,
 				3BC65D822584F3780063AFF1 /* libogg.a */,
@@ -2272,13 +2246,11 @@
 				3B1C23A425A19C600075EF5D /* bitmap.cpp in Sources */,
 				3B1C23A525A19C600075EF5D /* tilemapvx-binding.cpp in Sources */,
 				3B1C23A625A19C600075EF5D /* window-binding.cpp in Sources */,
-				3B1C23A725A19C600075EF5D /* midisource.cpp in Sources */,
 				3BA69457263DAB53004194EB /* libnsgif.c in Sources */,
 				3B1C23A825A19C600075EF5D /* graphics-binding.cpp in Sources */,
 				3B1C23A925A19C600075EF5D /* plane.cpp in Sources */,
 				3B1C23AA25A19C600075EF5D /* tilequad.cpp in Sources */,
 				3B1C23AD25A19C600075EF5D /* tileatlas.cpp in Sources */,
-				3B1C23AE25A19C600075EF5D /* fluid-fun.cpp in Sources */,
 				3B1C23AF25A19C600075EF5D /* scene.cpp in Sources */,
 				3B1C23B025A19C600075EF5D /* texpool.cpp in Sources */,
 				3B1C23B125A19C600075EF5D /* font-binding.cpp in Sources */,
@@ -2365,13 +2337,11 @@
 				3BBE87B32705A73400A574AE /* bitmap.cpp in Sources */,
 				3BBE87B42705A73400A574AE /* tilemapvx-binding.cpp in Sources */,
 				3BBE87B52705A73400A574AE /* window-binding.cpp in Sources */,
-				3BBE87B62705A73400A574AE /* midisource.cpp in Sources */,
 				3BBE87B72705A73400A574AE /* libnsgif.c in Sources */,
 				3BBE87B82705A73400A574AE /* graphics-binding.cpp in Sources */,
 				3BBE87B92705A73400A574AE /* plane.cpp in Sources */,
 				3BBE87BA2705A73400A574AE /* tilequad.cpp in Sources */,
 				3BBE87BB2705A73400A574AE /* tileatlas.cpp in Sources */,
-				3BBE87BC2705A73400A574AE /* fluid-fun.cpp in Sources */,
 				3BBE87BD2705A73400A574AE /* scene.cpp in Sources */,
 				3BBE87BE2705A73400A574AE /* texpool.cpp in Sources */,
 				3BBE87BF2705A73400A574AE /* font-binding.cpp in Sources */,
@@ -2450,13 +2420,11 @@
 				3BC65DBD2584F3AD0063AFF1 /* bitmap.cpp in Sources */,
 				3BC65DBE2584F3AD0063AFF1 /* tilemapvx-binding.cpp in Sources */,
 				3BC65DBF2584F3AD0063AFF1 /* window-binding.cpp in Sources */,
-				3BC65DC02584F3AD0063AFF1 /* midisource.cpp in Sources */,
 				3BC65DC12584F3AD0063AFF1 /* graphics-binding.cpp in Sources */,
 				3BC65DC22584F3AD0063AFF1 /* plane.cpp in Sources */,
 				3BC65DC32584F3AD0063AFF1 /* tilequad.cpp in Sources */,
 				9656359B279A5B74003D6A75 /* theoraplay.c in Sources */,
 				3BC65DC62584F3AD0063AFF1 /* tileatlas.cpp in Sources */,
-				3BC65DC72584F3AD0063AFF1 /* fluid-fun.cpp in Sources */,
 				3BC65DC82584F3AD0063AFF1 /* scene.cpp in Sources */,
 				3BC65DC92584F3AD0063AFF1 /* texpool.cpp in Sources */,
 				3BC65DCA2584F3AD0063AFF1 /* font-binding.cpp in Sources */,
@@ -2535,13 +2503,11 @@
 				3B10EDBD2568E95E00372D13 /* bitmap.cpp in Sources */,
 				3B10EDFC2568E96A00372D13 /* tilemapvx-binding.cpp in Sources */,
 				3B10EDF52568E96A00372D13 /* window-binding.cpp in Sources */,
-				3B10EDB32568E95E00372D13 /* midisource.cpp in Sources */,
 				3B10EE042568E96A00372D13 /* graphics-binding.cpp in Sources */,
 				3B10EDD12568E95E00372D13 /* plane.cpp in Sources */,
 				3B10EDC32568E95E00372D13 /* tilequad.cpp in Sources */,
 				9656359C279A5B74003D6A75 /* theoraplay.c in Sources */,
 				3B10EDCB2568E95E00372D13 /* tileatlas.cpp in Sources */,
-				3B10EDB52568E95E00372D13 /* fluid-fun.cpp in Sources */,
 				3B10EDC62568E95E00372D13 /* scene.cpp in Sources */,
 				3B10EDC42568E95E00372D13 /* texpool.cpp in Sources */,
 				3B10EE062568E96A00372D13 /* font-binding.cpp in Sources */,

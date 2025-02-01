@@ -24,7 +24,6 @@
 #include "audiostream.h"
 #include "soundemitter.h"
 #include "sharedstate.h"
-#include "sharedmidistate.h"
 #include "eventthread.h"
 #include "sdl-util.h"
 #include "exception.h"
@@ -424,11 +423,6 @@ void Audio::sePlay(const char *filename,
 void Audio::seStop()
 {
 	p->se.stop();
-}
-
-void Audio::setupMidi()
-{
-	shState->midiState().initIfNeeded(shState->config());
 }
 
 double Audio::bgmPos(int track)
