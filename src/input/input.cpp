@@ -663,7 +663,7 @@ static const Input::ButtonCode otherDirs[4][3] =
     { Input::Left, Input::Right, Input::Up    }, /* Down  */
     { Input::Down, Input::Up,    Input::Right }, /* Left  */
     { Input::Down, Input::Up,    Input::Left  }, /* Right */
-    { Input::Left, Input::Right, Input::Up    }  /* Up    */
+    { Input::Left, Input::Right, Input::Down  }, /* Up    */
 };
 
 struct InputPrivate
