@@ -93,7 +93,8 @@ $(DOWNLOADS)/vorbis/configure: $(DOWNLOADS)/vorbis/autogen.sh
 	./autogen.sh
 
 $(DOWNLOADS)/vorbis/autogen.sh:
-	$(CLONE) $(GITHUB)/Eblo/vorbis -b mkxp-z $(DOWNLOADS)/vorbis
+	$(CLONE) $(GITHUB)/xiph/vorbis $(DOWNLOADS)/vorbis
+	sed -i '' 's/ -force_cpusubtype_ALL / /g' $(DOWNLOADS)/vorbis/configure.ac
 
 
 # Ogg, dependency of Vorbis
@@ -317,6 +318,7 @@ $(DOWNLOADS)/ruby/configure: $(DOWNLOADS)/ruby/configure.ac
 
 $(DOWNLOADS)/ruby/configure.ac:
 	$(CLONE) $(GITHUB)/Eblo/ruby $(DOWNLOADS)/ruby --single-branch -b mkxp-z-3.1.3 --depth 1;
+	sed -i '' 's/ DYLD_INSERT_LIBRARIES / /g' $(DOWNLOADS)/ruby/configure.ac
 
 # ====
 init_dirs:
