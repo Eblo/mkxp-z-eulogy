@@ -97,23 +97,36 @@ static int getControllerButtonArg(VALUE *argv) {
 
 const char* prefixButton = "pad_";
 const char* prefixAxis = "axis_";
+// SDL_GetScancodeName returns an empty string for invalid inputs, so use that for consistency.
+const char* invalidInputName = ""; 
 
 static VALUE sourceDescToRubyString(SourceDesc input) {
     VALUE inputValue;
+    const char* sdlInputName;
     switch(input.type) {
         case Key:
             inputValue = rb_str_new_cstr(SDL_GetScancodeName(input.d.scan));
             break;
         case CButton:
-            // Concatenate button prefix to name
-            inputValue = rb_str_new_cstr(prefixButton);
-            rb_str_concat(inputValue, rb_str_new_cstr(SDL_GameControllerGetStringForButton(input.d.cb)));
+            sdlInputName = SDL_GameControllerGetStringForButton(input.d.cb);
+            if(sdlInputName) {
+                // Concatenate button prefix to name
+                inputValue = rb_str_new_cstr(prefixButton);
+                rb_str_concat(inputValue, rb_str_new_cstr(sdlInputName));
+            } else {          
+                inputValue = rb_str_new_cstr(invalidInputName);
+            }
             break;
         case CAxis:
-            // Concatenate axis prefix to name
-            inputValue = rb_str_new_cstr(prefixAxis);
-            rb_str_concat(inputValue, rb_str_new_cstr(SDL_GameControllerGetStringForAxis(input.d.ca.axis)));
-            rb_str_concat(inputValue, rb_str_new_cstr(input.d.ca.dir == Negative ? "-" : "+"));
+            sdlInputName = SDL_GameControllerGetStringForAxis(input.d.ca.axis);
+            if(sdlInputName) {
+                // Concatenate axis prefix to name
+                inputValue = rb_str_new_cstr(prefixAxis);
+                rb_str_concat(inputValue, rb_str_new_cstr(sdlInputName));
+                rb_str_concat(inputValue, rb_str_new_cstr(input.d.ca.dir == Negative ? "-" : "+"));
+            } else {                
+                inputValue = rb_str_new_cstr(invalidInputName);
+            }
             break;
         default:
             inputValue = Qnil;
