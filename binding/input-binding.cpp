@@ -427,7 +427,9 @@ RB_METHOD(inputKeyMapping) {
                     rb_ary_push(gamepadKeys, rb_str_new_cstr(shState->input().getButtonName(binds[i].src.d.cb)));
                     break;
                 case CAxis:
-                    rb_ary_push(gamepadKeys, rb_str_new_cstr(shState->input().getAxisName(binds[i].src.d.ca.axis)));
+                    button = rb_str_new_cstr(shState->input().getAxisName(binds[i].src.d.ca.axis));
+                    rb_str_concat(button, rb_str_new_cstr(binds[i].src.d.ca.dir == Negative ? "-" : "+"));
+                    rb_ary_push(gamepadKeys, button);
                     break;
                 default:
                     break;
