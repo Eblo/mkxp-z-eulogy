@@ -464,7 +464,7 @@ static bool processCommand(const uint8 *buf, unsigned int buflen, PipeType fd) {
 
   case SHIMCMD_REQUESTSTATS:
     writeStatsReceived(
-        fd, SteamAPI_ISteamUserStats_RequestCurrentStats(GSteamStats));
+        fd, SteamAPI_ISteamUserStats_RequestUserStats(GSteamStats, GUserID));
     break;
 
   case SHIMCMD_STORESTATS:
