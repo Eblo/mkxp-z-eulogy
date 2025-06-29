@@ -694,7 +694,7 @@ json5pp::value loadUserSettings() {
     json5pp::value ret;
     VALUE cpath = rb_utf8_str_new_cstr(shState->config().userConfPath.c_str());
     
-    if (rb_funcall(rb_cFile, rb_intern("exists?"), 1, cpath) == Qtrue) {
+    if (rb_funcall(rb_cFile, rb_intern("exist?"), 1, cpath) == Qtrue) {
         VALUE f = rb_funcall(rb_cFile, rb_intern("open"), 2, cpath, rb_str_new("r", 1));
         VALUE data = rb_funcall(f, rb_intern("read"), 0);
         rb_funcall(f, rb_intern("close"), 0);
