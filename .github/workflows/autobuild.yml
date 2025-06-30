@@ -136,7 +136,7 @@ jobs:
 
   build-macos:
     name: macOS
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: benjlevesque/short-sha@v3.0
         id: short-sha
