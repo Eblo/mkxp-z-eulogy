@@ -52,6 +52,7 @@ RUBY_CONFIGURE_ARGS := \
 	--disable-rubygems \
 	--disable-install-doc \
 	--build=$(RBUILD) \
+	--with-baseruby=/opt/homebrew/opt/ruby \
 	${EXTRA_RUBY_CONFIG_ARGS}
 
 CONFIGURE := $(CONFIGURE_ENV) ./configure $(CONFIGURE_ARGS)
