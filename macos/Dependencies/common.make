@@ -53,6 +53,7 @@ RUBY_CONFIGURE_ARGS := \
 	--disable-install-doc \
 	--build=$(RBUILD) \
 	--with-baseruby=/usr/local/opt/ruby/bin/ruby \
+	--with-coroutine=ucontext \
 	${EXTRA_RUBY_CONFIG_ARGS}
 
 CONFIGURE := $(CONFIGURE_ENV) ./configure $(CONFIGURE_ARGS)
