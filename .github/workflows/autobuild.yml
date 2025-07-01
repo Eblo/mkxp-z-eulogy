@@ -145,9 +145,6 @@ jobs:
 
       - name: Remove pre-existing homebrew packages
         run: brew remove --force $(brew list)
-      
-      - name: Store brew Ruby location
-        run: brew --prefix ruby
 
       - name: Checkout repository
         uses: actions/checkout@v4
