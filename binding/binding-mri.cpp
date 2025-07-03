@@ -1116,7 +1116,7 @@ static void showExc(VALUE exc, const BacktraceData &btData) {
     file = btData.scriptNames.value(file, file);
     
     std::string ms(640, '\0');
-    snprintf(&ms[0], ms.size(), "Script '%s' line %s: %s occured.\n\n%s",
+    snprintf(&ms[0], ms.size(), "Script '%s' line %s: %s occurred.\n\n%s",
              file.c_str(), line, RSTRING_PTR(name), RSTRING_PTR(msg));
     
     showMsg(ms);
