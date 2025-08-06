@@ -114,20 +114,6 @@ static const CursorSrc cursorSrc =
 	IntRect( 68, 68, 24, 24 )
 };
 
-static const uint8_t cursorAlpha[] =
-{
-	/* Fade out */
-	0xFF, 0xF7, 0xEF, 0xE7, 0xDF, 0xD7, 0xCF, 0xC7, 0xBF, 0xB7,
-	0xAF, 0xA7, 0x9F, 0x97, 0x8F, 0x87, 0x7F, 0x77, 0x6F, 0x67,
-	/* Fade in */
-	0x5F, 0x67, 0x6F, 0x77, 0x7F, 0x87, 0x8F, 0x97, 0x9F, 0xA7,
-	0xAF, 0xB7, 0xBF, 0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7
-};
-
-static elementsN(cursorAlpha);
-
-static const uint8_t cursorAlphaResetIdx = 0x10;
-
 /* No cycle */
 static const uint8_t pauseAlpha[] =
 {
@@ -176,6 +162,9 @@ struct WindowVXPrivate
 	NormValue backOpacity;
 	NormValue contentsOpacity;
 
+	double cursorOpacity = 1.0;
+	double cursorOpacitySpeed = 8.0;
+
 	NormValue openness;
 	Tone *tone;
 
@@ -217,7 +206,6 @@ struct WindowVXPrivate
 
 	uint8_t pauseAlphaIdx;
 	uint8_t pauseQuadIdx;
-	uint8_t cursorAlphaIdx;
 
 	Vec2i sceneOffset;
 
@@ -244,8 +232,7 @@ struct WindowVXPrivate
 	      cursorVertDirty(false),
 	      cursorVertArrayDirty(false),
 	      pauseAlphaIdx(0),
-	      pauseQuadIdx(0),
-	      cursorAlphaIdx(0)
+	      pauseQuadIdx(0)
 	{
 		/* 4 scroll arrows + pause */
 		ctrlVert.resize(4 + 1);
@@ -643,7 +630,7 @@ struct WindowVXPrivate
 		if (cursorVert.count() == 0)
 			return;
 
-		Vec4 color(1, 1, 1, cursorAlpha[cursorAlphaIdx] / 255.0f);
+		Vec4 color(1, 1, 1, cursorOpacity);
 
 		for (size_t i = 0; i < cursorVert.count(); ++i)
 			Quad::setColor(&cursorVert.vertices[i*4], color);
@@ -654,9 +641,7 @@ struct WindowVXPrivate
 	void stepAnimations()
 	{
 		if (active)
-			if (++cursorAlphaIdx == cursorAlphaN)
-				cursorAlphaIdx = 0;
-
+			cursorOpacity = 0.67 + 0.33 * sin(cursorOpacitySpeed * shState->runTime());
 		if (pause)
 		{
 			if (pauseAlphaIdx < pauseAlphaN-1)
@@ -883,21 +868,22 @@ DEF_ATTR_SIMPLE(WindowVX, Y,          int,     p->geo.y)
 DEF_ATTR_SIMPLE(WindowVX, CursorRect, Rect&,  *p->cursorRect)
 DEF_ATTR_SIMPLE(WindowVX, Tone,       Tone&,  *p->tone)
 
-DEF_ATTR_RD_SIMPLE(WindowVX, Windowskin,      Bitmap*, p->windowskin)
-DEF_ATTR_RD_SIMPLE(WindowVX, Contents,        Bitmap*, p->contents)
-DEF_ATTR_RD_SIMPLE(WindowVX, Active,          bool,    p->active)
-DEF_ATTR_RD_SIMPLE(WindowVX, ArrowsVisible,   bool,    p->arrowsVisible)
-DEF_ATTR_RD_SIMPLE(WindowVX, Pause,           bool,    p->pause)
-DEF_ATTR_RD_SIMPLE(WindowVX, Width,           int,     p->width)
-DEF_ATTR_RD_SIMPLE(WindowVX, Height,          int,     p->height)
-DEF_ATTR_RD_SIMPLE(WindowVX, OX,              int,     p->contentsOff.x)
-DEF_ATTR_RD_SIMPLE(WindowVX, OY,              int,     p->contentsOff.y)
-DEF_ATTR_RD_SIMPLE(WindowVX, Padding,         int,     p->padding)
-DEF_ATTR_RD_SIMPLE(WindowVX, PaddingBottom,   int,     p->paddingBottom)
-DEF_ATTR_RD_SIMPLE(WindowVX, Opacity,         int,     p->opacity)
-DEF_ATTR_RD_SIMPLE(WindowVX, BackOpacity,     int,     p->backOpacity)
-DEF_ATTR_RD_SIMPLE(WindowVX, ContentsOpacity, int,     p->contentsOpacity)
-DEF_ATTR_RD_SIMPLE(WindowVX, Openness,        int,     p->openness)
+DEF_ATTR_RD_SIMPLE(WindowVX, Windowskin,     	 Bitmap*, p->windowskin)
+DEF_ATTR_RD_SIMPLE(WindowVX, Contents,       	 Bitmap*, p->contents)
+DEF_ATTR_RD_SIMPLE(WindowVX, Active,         	 bool,    p->active)
+DEF_ATTR_RD_SIMPLE(WindowVX, ArrowsVisible,  	 bool,    p->arrowsVisible)
+DEF_ATTR_RD_SIMPLE(WindowVX, Pause,          	 bool,    p->pause)
+DEF_ATTR_RD_SIMPLE(WindowVX, Width,          	 int,     p->width)
+DEF_ATTR_RD_SIMPLE(WindowVX, Height,         	 int,     p->height)
+DEF_ATTR_RD_SIMPLE(WindowVX, OX,             	 int,     p->contentsOff.x)
+DEF_ATTR_RD_SIMPLE(WindowVX, OY,             	 int,     p->contentsOff.y)
+DEF_ATTR_RD_SIMPLE(WindowVX, Padding,        	 int,     p->padding)
+DEF_ATTR_RD_SIMPLE(WindowVX, PaddingBottom,  	 int,     p->paddingBottom)
+DEF_ATTR_RD_SIMPLE(WindowVX, Opacity,        	 int,     p->opacity)
+DEF_ATTR_RD_SIMPLE(WindowVX, BackOpacity,    	 int,     p->backOpacity)
+DEF_ATTR_RD_SIMPLE(WindowVX, ContentsOpacity,	 int,     p->contentsOpacity)
+DEF_ATTR_RD_SIMPLE(WindowVX, Openness,       	 int,     p->openness)
+DEF_ATTR_RD_SIMPLE(WindowVX, CursorOpacitySpeed, double,  p->cursorOpacitySpeed)
 
 void WindowVX::setWindowskin(Bitmap *value)
 {
@@ -935,7 +921,6 @@ void WindowVX::setActive(bool value)
 		return;
 
 	p->active = value;
-	p->cursorAlphaIdx = cursorAlphaResetIdx;
 	p->updateCursorAlpha();
 }
 
@@ -1082,6 +1067,16 @@ void WindowVX::setOpenness(int value)
 
 	p->openness = value;
 	p->updateBaseQuad();
+}
+
+void WindowVX::setCursorOpacitySpeed(double value)
+{
+	guardDisposed();
+
+	if (p->cursorOpacitySpeed == value)
+		return;
+
+	p->cursorOpacitySpeed = value;
 }
 
 void WindowVX::initDynAttribs()

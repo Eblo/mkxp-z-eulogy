@@ -133,6 +133,8 @@ DEF_GFX_PROP_B(WindowVX, Active)
 DEF_GFX_PROP_B(WindowVX, ArrowsVisible)
 DEF_GFX_PROP_B(WindowVX, Pause)
 
+DEF_GFX_PROP_F(WindowVX, CursorOpacitySpeed)
+
 void windowVXBindingInit() {
   VALUE klass = rb_define_class("Window", rb_cObject);
 #if RAPI_FULL > 187
@@ -172,5 +174,6 @@ void windowVXBindingInit() {
     INIT_PROP_BIND(WindowVX, Padding, "padding");
     INIT_PROP_BIND(WindowVX, PaddingBottom, "padding_bottom");
     INIT_PROP_BIND(WindowVX, Tone, "tone");
+    INIT_PROP_BIND(WindowVX, CursorOpacitySpeed, "cursor_opacity_speed");
   }
 }
