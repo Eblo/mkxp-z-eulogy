@@ -308,7 +308,7 @@ $(LIBDIR)/libruby.3.4.dylib: $(DOWNLOADS)/ruby/Makefile
 $(DOWNLOADS)/ruby/Makefile: $(DOWNLOADS)/ruby/configure
 	cd $(DOWNLOADS)/ruby; \
 	export $(CONFIGURE_ENV); \
-	export CFLAGS="-flto=full -DRUBY_FUNCTION_NAME_STRING=__func__ $$CFLAGS -DHAVE_RB_HASH_BULK_INSERT -DHAVE_RB_REG_ONIG_MATCH"; \
+	export CFLAGS="-std=gnu99 -flto=full -DRUBY_FUNCTION_NAME_STRING=__func__ $$CFLAGS -DHAVE_RB_HASH_BULK_INSERT -DHAVE_RB_REG_ONIG_MATCH"; \
 	export LDFLAGS="-flto=full $$LDFLAGS"; \
 	./configure $(CONFIGURE_ARGS) $(RUBY_CONFIGURE_ARGS) $(RUBY_FLAGS)
 
