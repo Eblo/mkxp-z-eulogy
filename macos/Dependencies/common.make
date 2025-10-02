@@ -175,7 +175,7 @@ $(DOWNLOADS)/libpng/Makefile: $(DOWNLOADS)/libpng/configure
 	--enable-shared=no --enable-static=yes
 
 $(DOWNLOADS)/libpng/configure:
-	$(CLONE) $(GITHUB)/mkxp-z/libpng $(DOWNLOADS)/libpng
+	$(CLONE) $(GITHUB)/pnggroup/libpng -b v1.6.37 $(DOWNLOADS)/libpng
 
 # SDL2
 sdl2: init_dirs $(LIBDIR)/libSDL2.a
