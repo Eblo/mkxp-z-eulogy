@@ -79,7 +79,7 @@ $(DOWNLOADS)/vorbis/cmakebuild/Makefile: $(DOWNLOADS)/vorbis/CMakeLists.txt
 	$(CMAKE) -DBUILD_SHARED_LIBS=no
 
 $(DOWNLOADS)/vorbis/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/xiph/vorbis $(DOWNLOADS)/vorbis
+	$(CLONE) $(GITHUB)/xiph/vorbis -b v1.3.7 $(DOWNLOADS)/vorbis
 
 
 # Ogg, dependency of Vorbis
