@@ -143,7 +143,7 @@ $(DOWNLOADS)/pixman/Makefile: $(DOWNLOADS)/pixman/autogen.sh
 	--disable-arm-a64-neon
 
 $(DOWNLOADS)/pixman/autogen.sh:
-	$(CLONE) https://gitlab.freedesktop.org/pixman/pixman -b pixman-0.40.0 $(DOWNLOADS)/pixman
+	$(CLONE) https://gitlab.freedesktop.org/pixman/pixman -b pixman-0.42.2 $(DOWNLOADS)/pixman
 
 
 # PhysFS
