@@ -28,7 +28,7 @@ def lipo(a, b)
     end
 end
 
-FileUtils.rm_rf(DESTINATION) if Dir.exists?(DESTINATION); FileUtils.mkdir_p(DESTINATION)
+FileUtils.rm_rf(DESTINATION) if Dir.exist?(DESTINATION); FileUtils.mkdir_p(DESTINATION)
 
 armfiles.length.times{|i|
     if basenames[:b].include?(basenames[:a][i])
@@ -40,7 +40,7 @@ armfiles.length.times{|i|
 
 src_includes = BUILD_ARM.sub(/lib$/, "include")
 dst = DESTINATION.sub(/lib$/, "include")
-FileUtils.ln_s(src_includes, dst) if !Dir.exists?(dst)
+FileUtils.ln_s(src_includes, dst) if !Dir.exist?(dst)
 
 rb = File.join(BUILD_ARM, "ruby")
-FileUtils.ln_s(rb, DESTINATION) if Dir.exists?(rb)
+FileUtils.ln_s(rb, DESTINATION) if Dir.exist?(rb)
