@@ -76,3 +76,6 @@ DerivedData/
 
 # Meson logs
 *.tlog
+
+# Steam
+steamworks*
