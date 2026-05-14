@@ -379,7 +379,7 @@ int main(int argc, char *argv[]) {
             mkxp_fs::setCurrentDirectory(dataDirStr.c_str());
             Debug() << "Current directory set to" << dataDirStr;
             conf.read(argc, argv);
-            conf.readGameINI();
+            conf.setupGame();
         }
     }
 #endif

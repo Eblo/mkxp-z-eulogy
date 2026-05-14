@@ -156,7 +156,7 @@ struct Config {
     bool fontIsSolid(const char *fontName) const;
     
     void read(int argc, char *argv[]);
-    void readGameINI();
+    void setupGame();
 };
 
 #endif // CONFIG_H

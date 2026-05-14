@@ -247,7 +247,7 @@ try { exp } catch (...) {}
         throw Exception(Exception::MKXPError, "Unable to switch into gameFolder %s", gameFolder.c_str());
     }
     
-    readGameINI();
+    setupGame();
     
     // Now check for an extra mkxp.conf in the user's save directory and merge anything else from that
     userConfPath = mkxp_fs::normalizePath(std::string(customDataPath + "/" CONF_FILE).c_str(), 0, 1);
@@ -344,80 +344,10 @@ bool Config::fontIsSolid(const char *fontName) const {
     return false;
 }
 
-void Config::readGameINI() {
-    if (!customScript.empty()) {
-        game.title = customScript.c_str();
-        
-        if (rgssVersion == 0)
-            rgssVersion = 1;
-        
-        setupScreenSize(*this);
-        
-        return;
-    }
-    
-    std::string iniFileName(execName + ".ini");
-    SDLRWStream iniFile(iniFileName.c_str(), "r");
-    
-    bool convSuccess = false;
-    if (iniFile)
-    {
-        INIConfiguration ic;
-        if (ic.load(iniFile.stream()))
-        {
-            GUARD(game.title = ic.getStringProperty("Game", "Title"););
-            GUARD(game.scripts = ic.getStringProperty("Game", "Scripts"););
-            
-            strReplace(game.scripts, '\\', '/');
-            
-            if (game.title.empty()) {
-                Debug() << iniFileName + ": Could not find Game.Title";
-            }
-            
-            if (game.scripts.empty())
-                Debug() << iniFileName + ": Could not find Game.Scripts";
-        }
-    }
-    else
-        Debug() << "Could not read" << iniFileName;
-    
-    try {
-        game.title = Encoding::convertString(game.title);
-        convSuccess = true;
-    }
-    catch (const Exception &e) {
-        Debug() << iniFileName + ": Could not determine encoding of Game.Title";
-    }
-    
-    if (game.title.empty() || !convSuccess)
-        game.title = "mkxp-z";
-    
-    if (dataPathOrg.empty())
-        dataPathOrg = ".";
-    
-    if (dataPathApp.empty())
-        dataPathApp = game.title;
-    
-    customDataPath = mkxp_fs::normalizePath(prefPath(dataPathOrg.c_str(), dataPathApp.c_str()).c_str(), 0, 1);
-    
-    if (rgssVersion == 0) {
-        /* Try to guess RGSS version based on Data/Scripts extension */
-        rgssVersion = 1;
-        
-        if (!game.scripts.empty()) {
-            const char *p = &game.scripts[game.scripts.size()];
-            const char *head = &game.scripts[0];
-            
-            while (--p != head)
-                if (*p == '.')
-                    break;
-            
-            if (!strcmp(p, ".rvdata"))
-                rgssVersion = 2;
-            else if (!strcmp(p, ".rvdata2"))
-                rgssVersion = 3;
-        }
-    }
-    
+void Config::setupGame() {
+    rgssVersion = 3;
+    game.title = "Eulogy of an Insect";
+    game.scripts = "Data/Scripts.rvdata2";
+    customDataPath = mkxp_fs::normalizePath(prefPath("", game.title.c_str()).c_str(), 0, 1);
     setupScreenSize(*this);
 }
