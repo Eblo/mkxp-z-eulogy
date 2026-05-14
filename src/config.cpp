@@ -139,6 +139,7 @@ void Config::read(int argc, char *argv[]) {
     auto optsJ = json::object({
         {"rgssVersion", 0},
         {"debugMode", false},
+        {"debugConsole", false},
         {"printFPS", false},
         {"winResizable", true},
         {"fullscreen", false},
@@ -211,15 +212,7 @@ void Config::read(int argc, char *argv[]) {
 #define GUARD(exp) \
 try { exp } catch (...) {}
     
-    editor.debug = false;
-    editor.battleTest = false;
-    
     if (argc > 1) {
-        if (!strcmp(argv[1], "debug") || !strcmp(argv[1], "test"))
-            editor.debug = true;
-        else if (!strcmp(argv[1], "btest"))
-            editor.battleTest = true;
-        
         for (int i = 1; i < argc; i++) {
             if (strcmp(argv[i], "debug"))
                 launchArgs.push_back(argv[i]);
@@ -319,7 +312,7 @@ try { exp } catch (...) {}
     BGM.trackCount = clamp(BGM.trackCount, 1, 16);
     
     // Determine whether to open a console window on... Windows
-    winConsole = getEnvironmentBool("MKXPZ_WINDOWS_CONSOLE", editor.debug);
+    winConsole = getEnvironmentBool("MKXPZ_WINDOWS_CONSOLE", opts["debugConsole"]);
     
 #ifdef __APPLE__
     // Determine whether to use the Metal renderer on macOS

@@ -270,14 +270,6 @@ static void mriBindingInit() {
     /* Load global constants */
     rb_gv_set("MKXP", Qtrue);
     
-    VALUE debug = rb_bool_new(shState->config().editor.debug);
-    if (rgssVer == 1)
-        rb_gv_set("DEBUG", debug);
-    else if (rgssVer >= 2)
-        rb_gv_set("TEST", debug);
-    
-    rb_gv_set("BTEST", rb_bool_new(shState->config().editor.battleTest));
-    
 #ifdef MKXPZ_BUILD_XCODE
     std::string version = std::string(MKXPZ_VERSION "/") + getPlistValue("GIT_COMMIT_HASH");
     VALUE vers = rb_utf8_str_new_cstr(version.c_str());
