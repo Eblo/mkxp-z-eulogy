@@ -52,7 +52,7 @@ RUBY_CONFIGURE_ARGS := \
 	--disable-rubygems \
 	--disable-install-doc \
 	--build=$(RBUILD) \
-	--with-baseruby=/Users/runner/hostedtoolcache/Ruby/3.2.9/arm64/bin/ruby \
+	--with-baseruby=/opt/homebrew/opt/ruby/bin/ruby \
 	--with-coroutine=ucontext \
 	${EXTRA_RUBY_CONFIG_ARGS}
 
