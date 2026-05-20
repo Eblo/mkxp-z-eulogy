@@ -131,6 +131,15 @@ int rgssThreadFun(void *userdata) {
 
   /* Setup AL context */
   static const ALCint attrs[] = {
+    /* HRTF is explicitly disabled here because it results in poor-quality audio
+     * when enabled (see https://github.com/mkxp-z/mkxp-z/issues/341). By
+     * default, it's enabled when OpenAL Soft detects that the user is using
+     * headphones for audio drivers that support detecting if the user is using
+     * headphones, and disabled regardless of whether or not the user is using
+     * headphones if the audio driver does not support this detection. The HRTF
+     * is required for positional audio support, so we'll need to find a way
+     * around the audio quality issues and inconsistent detection of whether or
+     * not the user is using headphones once we have positional audio support. */
     ALC_HRTF_SOFT, ALC_FALSE,
     0
   };
