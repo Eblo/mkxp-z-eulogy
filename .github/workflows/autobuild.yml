@@ -126,7 +126,7 @@ jobs:
           mv ./3.4.0 ./stdlib
           cp ../../mkxp.json .
           cp ../../vendor/ANGLE/libGLESv2.so ./lib64
-          cp ../../vendor/ANGLE/libEGL.so ./lib64
+          cp ../../vendor/ANGLE/libEGL.so.1 ./lib64
           cp ../../vendor/ANGLE/libvulkan.so.1 ./lib64
           cp ../../vendor/ANGLE/libvk_swiftshader.so ./lib64
           cp ../../vendor/ANGLE/vk_swiftshader_icd.json .
