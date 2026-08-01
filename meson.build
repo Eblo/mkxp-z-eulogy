@@ -52,7 +52,8 @@ if steamworks_path != ''
         endif
     endif
 
-    steam_libpath = steamworks_path + '/redistributable_bin/' + bindir
+    steamworks_path = join_paths(meson.current_source_dir(), steamworks_path)
+    steam_libpath =  steamworks_path + '/redistributable_bin/' + bindir
     steamlib = compilers['cpp'].find_library(libname, required: false, dirs: [steam_libpath])
 
     if steamlib.found() == true

@@ -232,6 +232,7 @@
 		3B1C23E725A19C600075EF5D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3BDB23E22564546E00C4A63D /* icon.icns */; };
 		3B1C23E925A19C600075EF5D /* Assets.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BA08EA4256641ED00449CFF /* Assets.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B1C23EB25A19C600075EF5D /* mkxp.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BD2B7282565B35D003DAD8A /* mkxp.json */; };
+		45B88191773A89BF53F70098 /* vk_swiftshader_icd.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = E2427178546D86DD07F65207 /* vk_swiftshader_icd.json */; };
 		3B1C23EE25A19C600075EF5D /* libruby.3.4.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1C230A25A144A10075EF5D /* libruby.3.4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3B1C23FD25A19FB40075EF5D /* steamshim_mac_helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B1C23FC25A19FB40075EF5D /* steamshim_mac_helpers.mm */; };
 		3B1C241225A1A7120075EF5D /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1C241125A1A7120075EF5D /* libsteam_api.dylib */; };
@@ -257,6 +258,8 @@
 		3B522DE6259C2039003301C4 /* LUrlParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B522DE4259C2039003301C4 /* LUrlParser.cpp */; };
 		3B522DED259C3E97003301C4 /* mkxp.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BD2B7282565B35D003DAD8A /* mkxp.json */; };
 		3B522DEF259C3E9D003301C4 /* mkxp.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BD2B7282565B35D003DAD8A /* mkxp.json */; };
+		60135678D8FB7976F09C82FE /* vk_swiftshader_icd.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = E2427178546D86DD07F65207 /* vk_swiftshader_icd.json */; };
+		451D3C9240366F054120AE68 /* vk_swiftshader_icd.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = E2427178546D86DD07F65207 /* vk_swiftshader_icd.json */; };
 		3B5A84062569B56F00BAF2E5 /* config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A84052569B56F00BAF2E5 /* config.cpp */; };
 		3B5A840D2569BE7C00BAF2E5 /* filesystemImplApple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B5A840C2569BE7C00BAF2E5 /* filesystemImplApple.mm */; };
 		3B5A8445256A0F6300BAF2E5 /* libopenal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5A8444256A0F6300BAF2E5 /* libopenal.a */; };
@@ -381,6 +384,7 @@
 		3BBE87FA2705A73400A574AE /* Assets.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BA08EA4256641ED00449CFF /* Assets.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3BBE87FB2705A73400A574AE /* steam_appid.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B1C243E25A1B8D20075EF5D /* steam_appid.txt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE87FD2705A73400A574AE /* mkxp.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BD2B7282565B35D003DAD8A /* mkxp.json */; };
+		3BBE87FFF705A73400A574AE /* vk_swiftshader_icd.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = E2427178546D86DD07F65207 /* vk_swiftshader_icd.json */; };
 		3BBE87FF2705A73400A574AE /* 3.4.0 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B251DA526DA2CFA00E5D09B /* 3.4.0 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE88022705A73400A574AE /* libEGL.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5E1F0925A881FB0086FFDC /* libEGL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3BBE88042705A73400A574AE /* libsteam_api.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B1C241125A1A7120075EF5D /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -631,6 +635,7 @@
 			dstSubfolderSpec = 1;
 			files = (
 				3B1C23EB25A19C600075EF5D /* mkxp.json in CopyFiles */,
+				45B88191773A89BF53F70098 /* vk_swiftshader_icd.json in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +729,7 @@
 			dstSubfolderSpec = 1;
 			files = (
 				3B522DEF259C3E9D003301C4 /* mkxp.json in CopyFiles */,
+				451D3C9240366F054120AE68 /* vk_swiftshader_icd.json in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -800,6 +806,7 @@
 			dstSubfolderSpec = 1;
 			files = (
 				3BBE87FD2705A73400A574AE /* mkxp.json in CopyFiles */,
+				3BBE87FFF705A73400A574AE /* vk_swiftshader_icd.json in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -820,6 +827,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3BBE88022705A73400A574AE /* libEGL.dylib in Embed Frameworks */,
+				3B1C23DB25A19C600075EF5D /* libruby.3.4.dylib in Embed Frameworks */,
 				3BBE88042705A73400A574AE /* libsteam_api.dylib in Embed Frameworks */,
 				3BBE88052705A73400A574AE /* libGLESv2.dylib in Embed Frameworks */,
 				49C8D4B3C9A756EBE79779A3 /* libvk_swiftshader.dylib in Embed Frameworks */,
@@ -834,6 +842,7 @@
 			dstSubfolderSpec = 1;
 			files = (
 				3B522DED259C3E97003301C4 /* mkxp.json in CopyFiles */,
+				60135678D8FB7976F09C82FE /* vk_swiftshader_icd.json in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1083,6 +1092,7 @@
 		3BD2B7252565AEC0003DAD8A /* Z-intel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Z-intel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BD2B7272565B343003DAD8A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		3BD2B7282565B35D003DAD8A /* mkxp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = mkxp.json; path = ../mkxp.json; sourceTree = "<group>"; };
+		E2427178546D86DD07F65207 /* vk_swiftshader_icd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = vk_swiftshader_icd.json; path = ../vendor/ANGLE/vk_swiftshader_icd.json; sourceTree = "<group>"; };
 		3BDB23E22564546E00C4A63D /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		3BDB25C52565184600C4A63D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BE080E4256879FC0006849F /* libSDL2main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2main.a; path = "Dependencies/build-macosx-x86_64/lib/libSDL2main.a"; sourceTree = "<group>"; };
@@ -1773,6 +1783,7 @@
 				3B1C240B25A1A43B0075EF5D /* steam */,
 				3B1C231D25A15F8F0075EF5D /* mkxp */,
 				3BD2B7282565B35D003DAD8A /* mkxp.json */,
+				E2427178546D86DD07F65207 /* vk_swiftshader_icd.json */,
 				3BD2B3AF25651885003DAD8A /* mkxp.entitlements */,
 				3B58E90F26293A9D001F9031 /* shim.entitlements */,
 				3BDB25C52565184600C4A63D /* Info.plist */,
@@ -2620,7 +2631,8 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = shim.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
@@ -2688,7 +2700,8 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = shim.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
@@ -2904,6 +2917,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2975,6 +2989,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGNING_ALLOWED = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

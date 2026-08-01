@@ -15,5 +15,6 @@ else
   else
     archarg = '32'
   endif
-  meson.add_install_script('install.sh', meson.project_name() + '.' + host_machine.cpu(), archarg, swarg)
+
+  meson.add_install_script('install.sh', meson.project_name() + '.' + host_machine.cpu(), swarg)
 endif

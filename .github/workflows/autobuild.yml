@@ -3,7 +3,7 @@ name: Automatic Build
 
 on:
   push:
-    branches: ['dev', 'autobuild']
+    branches: ['dev', 'autobuild', 'steamworks']
     paths-ignore: ['*.md', '*.json', '*.png']
 
 jobs:
@@ -33,6 +33,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Checkout SteamworksSDK repository
+        uses: actions/checkout@v6
+        with:
+          repository: 'rlabrecque/SteamworksSDK'
+          ref: '34d9338aa892213861bd9f84c4dd9c5b7fd23de7'
+          path: 'SteamworksSDK'
+
       - uses: actions/cache@v5
         with:
           path: |
@@ -54,6 +61,7 @@ jobs:
           cd build
           ninja
           strip ./mkxp-z.exe
+          strip ./steam_mkxp-z.exe
 
       - name: Prepare archive
         shell: msys2 {0}
@@ -71,6 +79,7 @@ jobs:
           cp ../../vendor/ANGLE/COPYING ./COPYING_ANGLE
           mv ./3.4.0 ./stdlib
           cp ../mkxp-z.exe .
+          cp ../steam_mkxp-z.exe .
           cp ../../mkxp.json .
 
       - uses: actions/upload-artifact@v7
@@ -93,6 +102,13 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v6
+
+      - name: Checkout SteamworksSDK repository
+        uses: actions/checkout@v6
+        with:
+          repository: 'rlabrecque/SteamworksSDK'
+          ref: '34d9338aa892213861bd9f84c4dd9c5b7fd23de7'
+          path: 'SteamworksSDK'
 
       - uses: actions/cache@v5
         with:
@@ -153,6 +169,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Checkout SteamworksSDK repository
+        uses: actions/checkout@v6
+        with:
+          repository: 'rlabrecque/SteamworksSDK'
+          ref: '34d9338aa892213861bd9f84c4dd9c5b7fd23de7'
+          path: 'macos/Dependencies/Frameworks/steam/sdk'
+
       - uses: actions/cache@v5
         with:
           path: |
@@ -175,15 +198,15 @@ jobs:
       - name: Build app
         run: |
           cd macos
-          xcodebuild -project mkxp-z.xcodeproj -configuration "Release" -scheme "Universal" -derivedDataPath "$GITHUB_WORKSPACE/build"
+          xcodebuild -project mkxp-z.xcodeproj -configuration "Release" -scheme "Universal (Steam)" -derivedDataPath "$GITHUB_WORKSPACE/build"
 
       - name: Compress app
         run: |
           cd build/Build/Products/Release
-          ditto -c -k --sequesterRsrc --keepParent Z-universal.app Z-universal.app.zip
+          ditto -c -k --sequesterRsrc --keepParent Z-steam.app Z-steam.app.zip
 
       - name: Upload archive
         uses: actions/upload-artifact@v7
         with:
           name: mkxp-z.macos.${{github.ref_name}}-${{steps.short-sha.outputs.sha}}
-          path: build/Build/Products/Release/Z-universal.app.zip
+          path: build/Build/Products/Release/Z-steam.app.zip
