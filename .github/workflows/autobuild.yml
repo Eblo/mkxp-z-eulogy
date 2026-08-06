@@ -81,6 +81,7 @@ jobs:
           cp ../mkxp-z.exe .
           cp ../steam_mkxp-z.exe .
           cp ../../mkxp.json .
+          cp ../../steam_appid.txt .
 
       - uses: actions/upload-artifact@v7
         with:
@@ -141,6 +142,8 @@ jobs:
           cp -r ../../linux/build-x86_64/lib/ruby/3.4.0 .
           mv ./3.4.0 ./stdlib
           cp ../../mkxp.json .
+          cp ../../steam_appid.txt .
+          cp ../../mkxp-z.sh .
           cp ../../vendor/ANGLE/libGLESv2.so ./lib64
           cp ../../vendor/ANGLE/libEGL.so.1 ./lib64
           cp ../../vendor/ANGLE/libvulkan.so.1 ./lib64

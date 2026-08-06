@@ -13,6 +13,7 @@ mkdir -p ${MESON_INSTALL_PREFIX}/lib64
 
 # Required by Ubuntu
 get_dep ruby
+get_dep libyaml
 
 # Required by Fedora & Manjaro
 get_dep libcrypt

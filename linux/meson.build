@@ -16,5 +16,10 @@ else
     archarg = '32'
   endif
 
-  meson.add_install_script('install.sh', meson.project_name() + '.' + host_machine.cpu(), swarg)
+  exe_name = meson.project_name() +  '.' + host_machine.cpu()
+  if steamworks == true
+      exe_name = 'steam_' + exe_name
+  endif
+
+  meson.add_install_script('install.sh', exe_name, swarg)
 endif
