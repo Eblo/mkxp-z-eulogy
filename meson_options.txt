@@ -14,7 +14,7 @@ option('static_executable', type: 'boolean', value: true, description: 'Build a 
 option('appimagekit_path', type: 'string', value: '', description: 'Path to AppImageTool, used for building AppImages')
 option('appimage', type: 'boolean', value: false, description: 'Whether to install to an AppImage or just copy everything')
 option('steamworks_path', type: 'string', value: 'SteamworksSDK', description: 'Path to Steamworks SDK')
-option('steam_appid', type: 'string', value: '2943990', description: 'Steam AppID. Set this to use SteamAPI_RestartAppIfNecessary')
+option('steam_appid', type: 'string', value: '5050780', description: 'Steam AppID. Set this to use SteamAPI_RestartAppIfNecessary')
 option('steamshim_debug', type: 'boolean', value: false, description: 'Whether to show Steamshim debug messages in the console')
 
 option('gfx_backend', type: 'combo', value: 'gles', choices: ['gl', 'gles'], description: 'Graphics rendering API to use.')
