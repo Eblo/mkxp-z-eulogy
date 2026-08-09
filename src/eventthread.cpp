@@ -343,7 +343,7 @@ void EventThread::process(RGSSThreadData &rtData)
                     break;
                 }
                 
-                if (event.key.keysym.scancode == SDL_SCANCODE_F12)
+                if (event.key.keysym.scancode == SDL_SCANCODE_F11)
                 {
                     if (!rtData.config.enableReset)
                         break;
@@ -364,7 +364,7 @@ void EventThread::process(RGSSThreadData &rtData)
                 break;
                 
             case SDL_KEYUP :
-                if (event.key.keysym.scancode == SDL_SCANCODE_F12)
+                if (event.key.keysym.scancode == SDL_SCANCODE_F11)
                 {
                     if (!rtData.config.enableReset)
                         break;
