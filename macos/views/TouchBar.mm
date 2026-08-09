@@ -119,7 +119,7 @@ MKXPZTouchBar *_sharedTouchBar;
 }
 
 -(void)simF12 {
-    [self simulateKeypress:SDL_SCANCODE_F12];
+    [self simulateKeypress:SDL_SCANCODE_F11];
 }
 
 -(void)simFunctionKey {
