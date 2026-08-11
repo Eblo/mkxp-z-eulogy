@@ -8,7 +8,7 @@ if [ "$UNAME" == "Darwin" ]; then
 	if [ ! -e "$LINK_DIR" ] && [ ! -L "$LINK_DIR" ]; then
 		ln -s "$GAMEROOT" "$LINK_DIR"
 	fi
-	exec ${GAMEROOT}/Z-steam.app/Contents/MacOS/shim
+	exec "${GAMEROOT}"/Z-steam.app/Contents/MacOS/shim
 else
 	# Linux
 	export LD_LIBRARY_PATH="${GAMEROOT}/lib64":$LD_LIBRARY_PATH
