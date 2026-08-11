@@ -276,7 +276,12 @@ BUGS_ioSeek(PHYSFS_Io *self, PHYSFS_uint64 offset)
 	uint64_t targetDword  = offset / 4;
 	uint64_t dwordsSought = targetDword - currentDword;
 
+#ifdef MKXPZ_BUILD_XCODE
+	for (uint64_t i = 0; i < dwordsSought; ++i)
+		advanceMagic(entry->currentMagic);
+#else
 	advanceMagicN(entry->currentMagic, (uint32_t) dwordsSought);
+#endif
 
 	entry->currentOffset = offset;
 	entry->io->seek(entry->io, entry->data.offset + entry->currentOffset);
