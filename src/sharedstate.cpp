@@ -166,6 +166,14 @@ struct SharedStatePrivate
 		TEX::del(globalTex);
 		TEXFBO::fini(gpTexFBO);
 		TEXFBO::fini(atlasTex);
+#ifdef MKXPZ_BUILD_XCODE
+		/*
+		 * When closing the game on macOS, this destructor runs all code within it, but the calling SharedState
+		 * destructor never proceeds past the delete call. Since the application is done at this point anyway, it should
+		 * be okay albeit crude to call std::quick_exit() here.
+		 */
+		std::quick_exit(0);
+#endif
 	}
 };
 
